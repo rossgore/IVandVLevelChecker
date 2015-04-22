@@ -132,7 +132,7 @@ public class StatDebugGUI extends JFrame{
     	// set up the window
         setTitle("V&V Calculator");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setPreferredSize(new Dimension(555, 820));
+        setPreferredSize(new Dimension(560, 820));
         
         
         // set up file choice
@@ -199,7 +199,7 @@ public class StatDebugGUI extends JFrame{
         predTypeLabel = new JLabel("Condition Types:");
         singleVarPredBox = new JCheckBox("Single Variable");
         singleVarPredBox.setSelected(true);
-        scalarPairPredBox = new JCheckBox("Scalar Pairs                                           ");
+        scalarPairPredBox = new JCheckBox("Scalar Pairs                                                ");
         scalarPairPredBox.setSelected(true);
         compoundPredBox = new JCheckBox("Compound                                            ");
 
@@ -233,7 +233,7 @@ public class StatDebugGUI extends JFrame{
 		blankDivider[1] = new JLabel("                                                ");
 		blankDivider[2] = new JLabel("                                                                                                                          ");
 		blankDivider[3] = new JLabel("                                                                                                                          ");
-		blankDivider[4] = new JLabel("                                                      ");
+		blankDivider[4] = new JLabel("                                                            ");
 		blankDivider[5] = new JLabel("                                                            ");
 		blankDivider[6] = new JLabel("                       ");
 		blankDivider[7] = new JLabel("                       ");
