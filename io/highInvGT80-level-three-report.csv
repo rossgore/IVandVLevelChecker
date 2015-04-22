@@ -1,4 +1,0 @@
-The hypothesisized contribution rate of [(maxBirthRate - minBirthRate > 1) || resistChange < 0.20 || (stress < 0.40 && technology < 0.60)] was 0.6700
-The contribution rate of the predicate actually was 0.0214
-It was true in 9.53% of the cases meeting/exceeding the threshold
-

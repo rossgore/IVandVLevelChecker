@@ -83,9 +83,9 @@ public class LevelThreeValidityCheck {
 
 	public void writeReport(double guess, double totalPredWin, double totalPredTrue){
 		double actualSusp = totalPredWin/totalPredTrue;
-		double winPrct = (totalPredWin/totalWins)*100;
-		String output = "The hypothesisized contribution rate of ["+ customPredicate+"] was "+String.format("%.4f", guess)+"\nThe contribution rate of the predicate actually was "+
-			            String.format("%.4f", actualSusp)+"\nIt was true in "+String.format("%.2f", winPrct)+"% of the cases meeting/exceeding the threshold\n";
+		double winPrct = (totalPredWin/totalWins);
+		String output = "CustomPredicate,Correlation,Coverage,HarmonicMean\n";
+		      output += customPredicate+","+String.format("%.4f", actualSusp)+","+String.format("%.4f", winPrct)+","+String.format("%4f",harmonicMean(actualSusp,winPrct));
 		try
 		{
 			PrintWriter out = new PrintWriter(outputFilename);
@@ -251,6 +251,13 @@ public class LevelThreeValidityCheck {
 
 	public void setOutputFilename(String pOutputFilename){
 		outputFilename = pOutputFilename;
+	}
+	
+	public static double harmonicMean(double a, double b)
+	{
+		double numer = 2 * a * b;
+		double demo = a + b;
+		return numer/demo;
 	}
 	
 	public static int getIndex(String s, String[] list)

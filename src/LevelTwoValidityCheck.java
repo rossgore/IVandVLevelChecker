@@ -64,6 +64,7 @@ public class LevelTwoValidityCheck {
 	private ArrayList<String> totalPredsList = new ArrayList<String>();
 	private ArrayList<Double> totalSuspList = new ArrayList<Double>();
 	private ArrayList<Double> totalFailingCasesList = new ArrayList<Double>();
+	private ArrayList<Double> totalHMList = new ArrayList<Double>();
 	
 	private ArrayList<String> containsList = new ArrayList<String>();
 	private ArrayList<String> excludesList = new ArrayList<String>();
@@ -152,9 +153,7 @@ public class LevelTwoValidityCheck {
 		
 		if (failedCases)
 		{
-			output+=("----------------------------------------------------------\n");
-			output+=("Condition, Correlation, Coverage, Combined\n");
-			output+=("----------------------------------------------------------\n");
+			output+=("Condition, Correlation, HarmonicMean\n");
 		}
 		else
 		{
@@ -170,6 +169,7 @@ public class LevelTwoValidityCheck {
 		// print'em
 		ArrayList<Double> tempSusp = new ArrayList<Double>();
 		ArrayList<Double> tempCases = new ArrayList<Double>();
+		ArrayList<Double> tempHM = new ArrayList<Double>();
 		ArrayList<String> tempPreds = new ArrayList<String>();
 		
 		// remove negatives - this means they were never observed
@@ -181,31 +181,37 @@ public class LevelTwoValidityCheck {
 					tempSusp.add(totalSuspList.get(i));
 					tempPreds.add(totalPredsList.get(i));
 					tempCases.add(totalFailingCasesList.get(i));
+					tempHM.add(harmonicMean(totalSuspList.get(i), totalFailingCasesList.get(i)));
 			}
 		}
 		totalSuspList = tempSusp;
 		totalPredsList = tempPreds;
 		totalFailingCasesList = tempCases;
+		totalHMList = tempHM;
 		for (int i=0; i<totalSuspList.size()-1; i++)
 		{
 			for (int j=0; j<totalSuspList.size()-1; j++)
 			{
-				double leftD = totalSuspList.get(j);
+				double leftD = totalHMList.get(j);
+				double leftS = totalSuspList.get(j);
 				double leftFC = totalFailingCasesList.get(j);
 				String leftStr = totalPredsList.get(j);
 					
-				double rightD= totalSuspList.get(j+1);
+				double rightD = totalHMList.get(j+1);	
+				double rightS = totalSuspList.get(j+1);
 				double rightFC=totalFailingCasesList.get(j+1);
 				String rightStr = totalPredsList.get(j+1);
 				
 				if (rightD > leftD)
 				{
 					// swap'em
-					totalSuspList.set(j, rightD);
+					totalHMList.set(j, rightD);
+					totalSuspList.set(j, rightS);
 					totalPredsList.set(j, rightStr);
 					totalFailingCasesList.set(j, rightFC);
 					
-					totalSuspList.set(j+1, leftD);
+					totalHMList.set(j+1, leftD);
+					totalSuspList.set(j+1, leftS);
 					totalPredsList.set(j+1, leftStr);
 					totalFailingCasesList.set(j+1, leftFC);
 					
@@ -225,6 +231,7 @@ public class LevelTwoValidityCheck {
 						output+=String.format("%.4f", totalSuspList.get(i));
 						if (failedCases) {
 							output+=String.format(", %.4f", totalFailingCasesList.get(i));
+							output+=String.format(", %.4f", totalHMList.get(i));
 						}
 						output+="\n";
 					}
@@ -235,7 +242,10 @@ public class LevelTwoValidityCheck {
 					{
 						output+=(totalPredsList.get(i));
 						output+=String.format("%.4f", totalSuspList.get(i));
-						if (failedCases) {output+=String.format(", %.4f", totalFailingCasesList.get(i));}
+						if (failedCases) {
+							output+=String.format(", %.4f", totalFailingCasesList.get(i));
+							output+=String.format(", %.4f", totalHMList.get(i));
+					     }
 						output+="\n";
 					}
 				}
@@ -244,7 +254,10 @@ public class LevelTwoValidityCheck {
 			{
 				output+=(totalPredsList.get(i));
 				output+=String.format("%.4f", totalSuspList.get(i));
-				if (failedCases) {output+=String.format(", %.4f", totalFailingCasesList.get(i));}
+				if (failedCases) {
+					output+=String.format(", %.4f", totalFailingCasesList.get(i));
+					output+=String.format(", %.4f", totalHMList.get(i));
+				}
 				output+="\n";
 			}
 		}
@@ -2033,6 +2046,13 @@ public class LevelTwoValidityCheck {
 
 	public static double stddev(double[] a) {
 		return Math.sqrt(var(a));
+	}
+	
+	public static double harmonicMean(double a, double b)
+	{
+		double numer = 2 * a * b;
+		double demo = a + b;
+		return numer/demo;
 	}
 	
 	public static ArrayList<String> parse(String listOfTerms)

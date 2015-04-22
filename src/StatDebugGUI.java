@@ -1044,29 +1044,6 @@ public class StatDebugGUI extends JFrame{
 			
 			
 		}
-		
-    }
-    
-    // brings up main window when run
-    public static void main(String [] args)
-    {
-		try {
-		    UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-		} catch (Exception e)
-		{
-				e.printStackTrace();
-		}
-		String platform = "windows";
-		if (args.length == 0)
-		{
-		    StatDebugGUI gui = new StatDebugGUI(platform);
-		}
-		else
-		{
-			platform = args[0];
-			StatDebugGUI gui = new StatDebugGUI(platform);
-		}
-
     }
 	
 	public static String[] getVarnames(File file)
