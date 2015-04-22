@@ -195,7 +195,7 @@ public class StatDebugGUI extends JFrame{
         singleVarPredBox.setSelected(true);
         scalarPairPredBox = new JCheckBox("Scalar Pairs                                           ");
         scalarPairPredBox.setSelected(true);
-        compoundPredBox = new JCheckBox("Compound                    ");
+        compoundPredBox = new JCheckBox("Compound                          ");
 
         // set up pred type choice
         predSpecLabel = new JLabel("Cond Specificity:");
@@ -206,13 +206,13 @@ public class StatDebugGUI extends JFrame{
         // set up include/exclude choice
 		includeLabel = new JLabel("Including these terms ");
         filterPredsBox = new JCheckBox("");
-        filterTextField = new JTextField("Include Term1; Term2; Term3; ...",32);
+        filterTextField = new JTextField("Include Term1; Term2; Term3; ...",33);
 		excludeLabel = new JLabel("Excluding these terms ");
         excludesPredsBox = new JCheckBox("");
-        excludesTextField = new JTextField("Exclude Term1; Term2; Term3; ...",32);
+        excludesTextField = new JTextField("Exclude Term1; Term2; Term3; ...",33);
 		enableCheck = new JCheckBox("");
 		customPredsLabel = new JLabel("Test custom condition ");
-		customPredsTextField = new JTextField("(Var1 > Var2) || Var4 > 100", 32);
+		customPredsTextField = new JTextField("(Var1 > Var2) || Var4 > 100", 33);
 		customPredsTextField.setToolTipText("Visit http://goo.gl/KjWAzL for syntax and supported functions.");
 		//customSuspLabel = new JLabel("Contribution  Rate");
 		//customSuspTextField = new JTextField("0.##  (i.e. 0.67)", 8);
@@ -649,6 +649,16 @@ public class StatDebugGUI extends JFrame{
 		}
 		
     }
+	
+	public static void setUIFont (javax.swing.plaf.FontUIResource f){
+	    java.util.Enumeration keys = UIManager.getDefaults().keys();
+	    while (keys.hasMoreElements()) {
+	      Object key = keys.nextElement();
+	      Object value = UIManager.get (key);
+	      if (value != null && value instanceof javax.swing.plaf.FontUIResource)
+	        UIManager.put (key, f);
+	      }
+	    } 
     
     // brings up main window when run
     public static void main(String [] args)
@@ -670,8 +680,9 @@ public class StatDebugGUI extends JFrame{
 		    catch (IllegalAccessException e) {
 		       // handle exception
 		    }
-        
+        	setUIFont (new javax.swing.plaf.FontUIResource("Sans Serif",Font.PLAIN,12));
 		    StatDebugGUI gui = new StatDebugGUI();
+
     }
 	
 	public static String[] getVarnames(File file)
