@@ -110,18 +110,415 @@ public class StatDebugGUI extends JFrame{
     /**
      * Creates & displays window.
      */
-    public StatDebugGUI() {
-        initComponents();
+    public StatDebugGUI(String plat) {
+		if (plat.equals("mac"))
+        {
+			macInitComponents();
+		}
+		else
+		{ winInitComponents();
+		}
         
         // show the window
         pack();
         setVisible(true);
     }
+	
+    /**
+     * Initializes GUI window by adding components.
+     */
+    private void winInitComponents() {
+    	
+    	// set up the window
+        setTitle("V&V Calculator");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setPreferredSize(new Dimension(550, 820));
+        
+        
+        // set up file choice
+        fileButton = new JButton("       Choose Log File To Upload .....       ");
+		calcButton = new JButton("Click Here To Perform V&V Checks");
+		clearButton = new JButton("Clear Fields");
+		
+		// set up oppurtunity to build always/never predicates
+		singleVarReqLabel = new JLabel("Single Variable Req:");
+		singleVarLeftSideList = new JComboBox(DEFAULT_LEFT_NAMES);
+		singleVarLeftSideList.setPreferredSize(new Dimension(120, 30));
+		singleVarOperatorList = new JComboBox(SUPPORTED_OPERATORS); 
+		singleVarRightSide = new JTextField("Enter #", 8);
+		singleVarSubmitReq = new JButton("Add Req");
+		singleVarAlwaysButton = new JRadioButton(ALWAYS_STRING);
+		singleVarNeverButton = new JRadioButton(NEVER_STRING);
+		singleVarAlwaysList = new JTextArea(5, 22);
+		singleVarAlwaysList.setEditable(false);
+		svAlwaysPane = new JScrollPane(singleVarAlwaysList);
+		singleVarNeverList = new JTextArea(5, 23);
+		singleVarNeverList.setEditable(false);
+		svNeverPane = new JScrollPane(singleVarNeverList);
+		
+		spReqLabel = new JLabel("Scalar Pair Req:      ");
+		spLeftSideList = new JComboBox(DEFAULT_LEFT_NAMES);
+		spLeftSideList.setPreferredSize(new Dimension(120, 30));
+		spOperatorList = new JComboBox(SUPPORTED_OPERATORS); 
+		spRightSideList = new JComboBox(DEFAULT_RIGHT_NAMES);
+		spRightSideList.setPreferredSize(new Dimension(120, 30));
+		spSubmitReq = new JButton("Add Req");
+		spAlwaysButton = new JRadioButton(ALWAYS_STRING);
+		spAlwaysList = new JTextArea(5, 22);
+		spAlwaysList.setEditable(false);
+		spAlwaysPane = new JScrollPane(spAlwaysList);
+		spNeverButton = new JRadioButton(NEVER_STRING);
+		spNeverList = new JTextArea(5, 23);
+		spNeverList.setEditable(false);
+		spNeverPane = new JScrollPane(spNeverList);
+		
+		
+		// set up level 2 exploration
+		cutoffLabel = new JLabel("Choose Output Threshold :  ");
+		outcomeCutoff = new JSlider(0, 100);
+		outcomeCutoff.setMajorTickSpacing(20);
+		outcomeCutoff.setMinorTickSpacing(5);
+		outcomeCutoff.setPreferredSize(new Dimension(350, 30));
+		outcomeCutoff.setPaintTicks(true);
+		
+		outcomeValueLabel = new JLabel("Value:");
+		outcomeValueTextField = new JTextField("N/A", 4);
+		minLabel = new JLabel("Min");
+		medLabel = new JLabel("Mid");
+		maxLabel = new JLabel("Max");
+		minTextField = new JTextField(" N/A", 3);
+		minTextField.setEditable(false);
+		medTextField = new JTextField(" N/A", 3);
+		medTextField.setEditable(false);
+		maxTextField = new JTextField(" N/A", 3);
+		maxTextField.setEditable(false);
+		prctExpectedLabel = new JLabel("Prct of Cases Meeting/Exceeding Threshold:");
+		prctExpectedTextField = new JTextField("N/A", 3);
+		
+        // set up pred type choice
+        predTypeLabel = new JLabel("Condition Types:");
+        singleVarPredBox = new JCheckBox("Single Variable");
+        singleVarPredBox.setSelected(true);
+        scalarPairPredBox = new JCheckBox("Scalar Pairs                                           ");
+        scalarPairPredBox.setSelected(true);
+        compoundPredBox = new JCheckBox("Compound                                            ");
+
+        // set up pred type choice
+        predSpecLabel = new JLabel("Condition Specificity:");
+        staticPredBox = new JCheckBox("Static               ");
+        staticPredBox.setSelected(true);
+        elasticPredBox = new JCheckBox("Elastic            ");
+        
+        // set up include/exclude choice
+		includeLabel = new JLabel("Including these terms ");
+        filterPredsBox = new JCheckBox("");
+        filterTextField = new JTextField("Include Term1; Term2; Term3; ...",33);
+		excludeLabel = new JLabel("Excluding these terms ");
+        excludesPredsBox = new JCheckBox("");
+        excludesTextField = new JTextField("Exclude Term1; Term2; Term3; ...",33);
+		enableCheck = new JCheckBox("");
+		customPredsLabel = new JLabel("Test custom condition ");
+		customPredsTextField = new JTextField("(Var1 > Var2) || Var4 > 100", 33);
+		customPredsTextField.setToolTipText("Visit http://goo.gl/KjWAzL for syntax and supported functions.");
+		//customSuspLabel = new JLabel("Contribution  Rate");
+		//customSuspTextField = new JTextField("0.##  (i.e. 0.67)", 8);
+		
+	    // instantiate padding cheats
+		finalDivider = new JLabel("--------------------------------------------------------------------------------------------------------------------------------------");
+		sliderPad[0] = new JLabel("              ");
+		sliderPad[1] = new JLabel("                        ");
+		sliderPad[2] = new JLabel("                        ");
+	
+		blankDivider[0] = new JLabel("                                                ");
+		blankDivider[1] = new JLabel("                                                ");
+		blankDivider[2] = new JLabel("                                                                                                                          ");
+		blankDivider[3] = new JLabel("                                                                                                                          ");
+		blankDivider[4] = new JLabel("                                                ");
+		blankDivider[5] = new JLabel("                                                            ");
+		blankDivider[6] = new JLabel("                       ");
+		blankDivider[7] = new JLabel("                       ");
+		blankDivider[8] = new JLabel("                  ");
+		
+		
+		//Group the radio buttons.
+		ButtonGroup singleVarLevelOneGroup = new ButtonGroup();
+		singleVarAlwaysButton.setSelected(true);
+		singleVarLevelOneGroup.add(singleVarAlwaysButton);
+		singleVarLevelOneGroup.add(singleVarNeverButton);
+		
+		ButtonGroup spLevelOneGroup = new ButtonGroup();
+		spAlwaysButton.setSelected(true);
+		spLevelOneGroup.add(spNeverButton);
+		spLevelOneGroup.add(spAlwaysButton);
+       
+		levelOneDivider= new JLabel("---------------------------------------- Level 1 V&V Check: Specify Requirements ----------------------------------------");
+		levelTwoDivider= new JLabel("---------------------------------------- Level 2 V&V Check: Identify Conditions -----------------------------------------");
+		levelThreeDivider= new JLabel("                                                                                                                                             ");
+		computeDivider = new JLabel("                                                                                                                          ");
+		
+        
+        
+        
+        // initialize window layout & add components
+        setLayout(new FlowLayout(FlowLayout.LEFT));
+		getContentPane().add(blankDivider[0]);
+        getContentPane().add(fileButton);
+		getContentPane().add(blankDivider[1]);
+        getContentPane().add(levelOneDivider);
+		
+		// add custom always/never predicate support
+		
+		// single variable
+		getContentPane().add(singleVarReqLabel);
+		getContentPane().add(singleVarLeftSideList);
+		getContentPane().add(singleVarOperatorList); 
+		getContentPane().add(singleVarRightSide);
+		getContentPane().add(singleVarSubmitReq);
+		getContentPane().add(singleVarAlwaysButton);
+		getContentPane().add(singleVarNeverButton);
+		getContentPane().add(svAlwaysPane);
+		getContentPane().add(svNeverPane);
+		
+		// add divider for spacing
+		//getContentPane().add(blankDivider[2]);
+		
+		// scalar pair
+		getContentPane().add(spReqLabel);
+		getContentPane().add(spLeftSideList);
+		getContentPane().add(spOperatorList); 
+		getContentPane().add(spRightSideList);
+		getContentPane().add(spSubmitReq);
+		getContentPane().add(spAlwaysButton);
+		getContentPane().add(spNeverButton);
+		getContentPane().add(spAlwaysPane);
+		getContentPane().add(spNeverPane);
+		
+		getContentPane().add(blankDivider[3]);
+		getContentPane().add(levelTwoDivider);
+		
+		
+		getContentPane().add(cutoffLabel);
+		getContentPane().add(outcomeCutoff);
+		getContentPane().add(outcomeValueLabel);
+		getContentPane().add(outcomeValueTextField);
+		getContentPane().add(sliderPad[0]);
+		getContentPane().add(minLabel);
+		getContentPane().add(minTextField);
+		getContentPane().add(sliderPad[1]);
+		getContentPane().add(medLabel);
+		getContentPane().add(medTextField);
+		getContentPane().add(sliderPad[2]);
+		getContentPane().add(maxLabel);
+		getContentPane().add(maxTextField);
+		getContentPane().add(prctExpectedLabel);
+		getContentPane().add(prctExpectedTextField);	
+		
+		getContentPane().add(blankDivider[4]);
+        getContentPane().add(predTypeLabel);
+        getContentPane().add(singleVarPredBox);
+        getContentPane().add(scalarPairPredBox);
+       
+		
+		
+        getContentPane().add(predSpecLabel);
+		getContentPane().add(staticPredBox);
+        getContentPane().add(elasticPredBox);
+        getContentPane().add(compoundPredBox);
+		
+		//getContentPane().add(blankDivider[5]);
+		
+		getContentPane().add(filterPredsBox);
+		getContentPane().add(includeLabel);
+        getContentPane().add(filterTextField);
+		//getContentPane().add(blankDivider6);
+		
+		getContentPane().add(excludesPredsBox);
+		getContentPane().add(excludeLabel);
+        getContentPane().add(excludesTextField);
+		//getContentPane().add(blankDivider[7]);
+		//getContentPane().add(levelThreeDivider);
+		
+		getContentPane().add(enableCheck);
+		getContentPane().add(customPredsLabel);
+        getContentPane().add(customPredsTextField);
+		//getContentPane().add(customSuspLabel);
+		//getContentPane().add(customSuspTextField);
+		
+		getContentPane().add(finalDivider);
+		//getContentPane().add(computeDivider);
+		getContentPane().add(blankDivider[8]);
+        getContentPane().add(calcButton);
+		getContentPane().add(clearButton);
+			
+        
+        // create & assign action listener for button
+        calcButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+            	calcButtonActionPerformed(evt);
+            }
+        });
+		
+        singleVarSubmitReq.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+				if (selectedFile != null)
+				{
+					try
+					{
+						String var = String.valueOf(singleVarLeftSideList.getSelectedItem()).trim();
+						String op  = String.valueOf(singleVarOperatorList.getSelectedItem()).trim();
+						double value =  Double.parseDouble(String.valueOf(singleVarRightSide.getText()).trim());
+						var = var.replaceAll("\\s+","");
+						op = op.replaceAll("\\s+","");
+						String requirement = var+" "+op+" "+value+"\n";
+						if (singleVarNeverButton.isSelected())
+						{
+							singleVarNeverList.setText(singleVarNeverList.getText() + requirement);
+						}
+						else
+						{
+							singleVarAlwaysList.setText(singleVarAlwaysList.getText() + requirement);
+						}
+					}
+					catch (Exception e)
+					{
+						System.out.println("Trouble parsing single variable requirement.");
+						return;
+					}
+				}
+            }
+        });
+		
+        spSubmitReq.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+				if (selectedFile != null)
+				{
+					try
+					{
+						String var1 = String.valueOf(spLeftSideList.getSelectedItem()).trim();
+						String op  = String.valueOf(spOperatorList.getSelectedItem()).trim();
+						String var2 = String.valueOf(spRightSideList.getSelectedItem()).trim();
+						var1 = var1.replaceAll("\\s+","");
+						op = op.replaceAll("\\s+","");
+						var2=var2.replaceAll("\\s+","");
+						String requirement = var1+" "+op+" "+var2+"\n";
+						if (spNeverButton.isSelected())
+						{
+							spNeverList.setText(spNeverList.getText() + requirement);
+						}
+						else
+						{
+							spAlwaysList.setText(spAlwaysList.getText() + requirement);
+						}
+					}
+					catch (Exception e)
+					{
+						System.out.println("Trouble parsing scalar pairs requirement.");
+						return;
+					}
+				}
+            }
+        });
+		
+        outcomeCutoff.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent evt) {
+				if (selectedFile != null)
+				{
+					double min = Double.parseDouble(minTextField.getText());
+					double max = Double.parseDouble(maxTextField.getText());
+					double slidervalue = Double.parseDouble(String.valueOf(outcomeCutoff.getValue()));
+					
+					double valToSet = min + ((max-min)*(slidervalue/100.0));
+					outcomeValueTextField.setText(String.format("%.4f", valToSet));
+				}
+            }
+        });
+		
+		//When Press Enter After Change...do this
+		 outcomeValueTextField.addActionListener(new ActionListener() {    
+		 	public void actionPerformed(ActionEvent e) {
+		        if (selectedFile != null)
+				{
+	                try
+	                {
+						double enteredValue = Double.parseDouble(outcomeValueTextField.getText());
+						double min = Double.parseDouble(minTextField.getText());
+						double max = Double.parseDouble(maxTextField.getText());
+						
+						if (enteredValue >= min && enteredValue <= max)
+						{
+							double valToSet = (enteredValue-min)/(max-min);
+							valToSet = valToSet*100;
+							
+		                    outcomeCutoff.setValue((int) valToSet);
+							prctExpectedTextField.setText(getPrctExpected(selectedFile, enteredValue));
+						}
+						else
+						{
+							prctExpectedTextField.setText("ERR");
+		                    outcomeValueTextField.setText("ERR");
+		                    outcomeValueTextField.setToolTipText("Set Value in Range between min and max") ;
+						}
+						
+	                }
+	                catch(Exception ex)
+	                {
+						prctExpectedTextField.setText("ERR");
+	                    outcomeValueTextField.setText("ERR");
+	                    outcomeValueTextField.setToolTipText("Set Value in Range between min and max") ;   
+	                }
+				}     
+		    }
+		  });
+		  
+		clearButton.addActionListener(new ActionListener() {
+			 public void actionPerformed(ActionEvent ae) {
+				 singleVarAlwaysList.setText("");
+				 singleVarNeverList.setText("");
+				 spAlwaysList.setText("");
+				 spNeverList.setText("");
+				 outcomeValueTextField.setText(medTextField.getText());
+				 outcomeCutoff.setValue(50);
+				 filterTextField.setText("Include Term1; Term2; Term3; ...");
+				 excludesTextField.setText("Exclude Term1; Term2; Term3; ...");
+				 customPredsTextField.setText("(Var1 > Var2) || Var4 > 100");
+				 //customSuspTextField.setText("0.##  (i.e. 0.67)");
+		   }
+		});
+		
+        fileButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
+              JFileChooser fileChooser = new JFileChooser();
+              int returnValue = fileChooser.showOpenDialog(null);
+              if (returnValue == JFileChooser.APPROVE_OPTION) {
+                selectedFile = fileChooser.getSelectedFile();
+				
+				double min = findOutcome(selectedFile, MIN);
+				double max = findOutcome(selectedFile, MAX);
+				double med = (max+min)/2;
+				
+				String [] varNames = getVarnames(selectedFile);
+				
+				// update display
+				minTextField.setText(String.format("%.1f", min));
+				medTextField.setText(String.format("%.1f", med));
+				maxTextField.setText(String.format("%.1f", max));
+				outcomeValueTextField.setText(String.format("%.4f", med));
+				prctExpectedTextField.setText(getPrctExpected(selectedFile, med));
+				DefaultComboBoxModel singleVarLeftSideListModel = new DefaultComboBoxModel( varNames );
+				DefaultComboBoxModel spLeftSideListModel = new DefaultComboBoxModel( varNames );
+				DefaultComboBoxModel spRightSideListModel = new DefaultComboBoxModel( varNames );
+				singleVarLeftSideList.setModel( singleVarLeftSideListModel );
+				spLeftSideList.setModel(spLeftSideListModel);
+				spRightSideList.setModel(spRightSideListModel);
+              }
+            }
+          });
+    }
     
     /**
      * Initializes GUI window by adding components.
      */
-    private void initComponents() {
+    private void macInitComponents() {
     	
     	// set up the window
         setTitle("V&V Calculator");
@@ -649,28 +1046,26 @@ public class StatDebugGUI extends JFrame{
 		}
 		
     }
-	
-	public static void setUIFont (javax.swing.plaf.FontUIResource f){
-	    java.util.Enumeration keys = UIManager.getDefaults().keys();
-	    while (keys.hasMoreElements()) {
-	      Object key = keys.nextElement();
-	      Object value = UIManager.get (key);
-	      if (value != null && value instanceof javax.swing.plaf.FontUIResource)
-	        UIManager.put (key, f);
-	      }
-	    } 
     
     // brings up main window when run
     public static void main(String [] args)
     {
 		try {
-		            // Set cross-platform Java L&F (also called "Metal")
-		        UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-		    } catch (Exception e)
-			{
+		    UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+		} catch (Exception e)
+		{
 				e.printStackTrace();
-			}
-		    StatDebugGUI gui = new StatDebugGUI();
+		}
+		String platform = "windows";
+		if (args.length == 0)
+		{
+		    StatDebugGUI gui = new StatDebugGUI(platform);
+		}
+		else
+		{
+			platform = args[0];
+			StatDebugGUI gui = new StatDebugGUI(platform);
+		}
 
     }
 	
