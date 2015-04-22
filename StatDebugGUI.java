@@ -132,7 +132,7 @@ public class StatDebugGUI extends JFrame{
     	// set up the window
         setTitle("V&V Calculator");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setPreferredSize(new Dimension(550, 820));
+        setPreferredSize(new Dimension(555, 820));
         
         
         // set up file choice
@@ -233,7 +233,7 @@ public class StatDebugGUI extends JFrame{
 		blankDivider[1] = new JLabel("                                                ");
 		blankDivider[2] = new JLabel("                                                                                                                          ");
 		blankDivider[3] = new JLabel("                                                                                                                          ");
-		blankDivider[4] = new JLabel("                                                ");
+		blankDivider[4] = new JLabel("                                                      ");
 		blankDivider[5] = new JLabel("                                                            ");
 		blankDivider[6] = new JLabel("                       ");
 		blankDivider[7] = new JLabel("                       ");
