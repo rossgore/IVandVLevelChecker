@@ -84,8 +84,8 @@ public class LevelThreeValidityCheck {
 	public void writeReport(double guess, double totalPredWin, double totalPredTrue){
 		double actualSusp = totalPredWin/totalPredTrue;
 		double winPrct = (totalPredWin/totalWins)*100;
-		String output = "The hypothesisized suspiciousness of ["+ customPredicate+"] was "+String.format("%.4f", guess)+"\nThe suspiciousness of the predicate actually was "+
-			            String.format("%.4f", actualSusp)+"\nIt was true in "+String.format("%.2f", winPrct)+"% of the total wins observed\n";
+		String output = "The hypothesisized contribution rate of ["+ customPredicate+"] was "+String.format("%.4f", guess)+"\nThe contribution rate of the predicate actually was "+
+			            String.format("%.4f", actualSusp)+"\nIt was true in "+String.format("%.2f", winPrct)+"% of the cases meeting/exceeding the threshold\n";
 		try
 		{
 			PrintWriter out = new PrintWriter(outputFilename);

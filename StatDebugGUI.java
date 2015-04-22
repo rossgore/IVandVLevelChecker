@@ -56,7 +56,6 @@ public class StatDebugGUI extends JFrame{
 	private static JScrollPane spAlwaysPane;
 	private static JScrollPane spNeverPane;
 	
-	
 	// Level 2 stuff
 	private static JLabel  cutoffLabel;
 	private static JSlider outcomeCutoff;
@@ -68,6 +67,9 @@ public class StatDebugGUI extends JFrame{
 	private static JLabel minLabel;
 	private static JLabel medLabel;
 	private static JLabel maxLabel;
+	
+	private static JLabel prctExpectedLabel;
+	private static JTextField prctExpectedTextField;
     
     private static JLabel predSpecLabel;
     private static JCheckBox elasticPredBox;
@@ -84,17 +86,18 @@ public class StatDebugGUI extends JFrame{
 	private static JLabel includeLabel;
 	private static JLabel excludeLabel;
 
-    private static JRadioButton filterPredsBox;
+    private static JCheckBox filterPredsBox;
     private static JTextField filterTextField;
-    private static JRadioButton excludesPredsBox;
+    private static JCheckBox excludesPredsBox;
     private static JTextField excludesTextField;
 
 
 	// Level 3 stuff
+	private static JCheckBox enableCheck;
 	private static JLabel customPredsLabel;
 	private static JTextField customPredsTextField;
-	private static JLabel customSuspLabel;
-	private static JTextField customSuspTextField;
+	//private static JLabel customSuspLabel;
+	//private static JTextField customSuspTextField;
 
 	// non-array spacing and padding 
 	private static JLabel levelOneDivider;
@@ -121,14 +124,14 @@ public class StatDebugGUI extends JFrame{
     private void initComponents() {
     	
     	// set up the window
-        setTitle("IV&V Checker");
+        setTitle("V&V Calculator");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setPreferredSize(new Dimension(565, 810));
+        setPreferredSize(new Dimension(550, 820));
         
         
         // set up file choice
         fileButton = new JButton("       Choose Log File To Upload .....       ");
-		calcButton = new JButton("Click Here To Perform IV&V Checks");
+		calcButton = new JButton("Click Here To Perform V&V Checks");
 		clearButton = new JButton("Clear Fields");
 		
 		// set up oppurtunity to build always/never predicates
@@ -165,7 +168,7 @@ public class StatDebugGUI extends JFrame{
 		
 		
 		// set up level 2 exploration
-		cutoffLabel = new JLabel("Choose Success Cutoff Value: ");
+		cutoffLabel = new JLabel("Choose Output Threshold :  ");
 		outcomeCutoff = new JSlider(0, 100);
 		outcomeCutoff.setMajorTickSpacing(20);
 		outcomeCutoff.setMinorTickSpacing(5);
@@ -173,7 +176,7 @@ public class StatDebugGUI extends JFrame{
 		outcomeCutoff.setPaintTicks(true);
 		
 		outcomeValueLabel = new JLabel("Value:");
-		outcomeValueTextField = new JTextField("N/A", 3);
+		outcomeValueTextField = new JTextField("N/A", 4);
 		minLabel = new JLabel("Min");
 		medLabel = new JLabel("Mid");
 		maxLabel = new JLabel("Max");
@@ -183,45 +186,48 @@ public class StatDebugGUI extends JFrame{
 		medTextField.setEditable(false);
 		maxTextField = new JTextField(" N/A", 3);
 		maxTextField.setEditable(false);
+		prctExpectedLabel = new JLabel("Prct of Cases Meeting/Exceeding Threshold:");
+		prctExpectedTextField = new JTextField("N/A", 3);
 		
         // set up pred type choice
         predTypeLabel = new JLabel("Condition Types:");
         singleVarPredBox = new JCheckBox("Single Variable");
         singleVarPredBox.setSelected(true);
-        scalarPairPredBox = new JCheckBox("Scalar Pairs");
+        scalarPairPredBox = new JCheckBox("Scalar Pairs                                           ");
         scalarPairPredBox.setSelected(true);
-        compoundPredBox = new JCheckBox("Compound      ");
+        compoundPredBox = new JCheckBox("Compound                    ");
 
         // set up pred type choice
         predSpecLabel = new JLabel("Cond Specificity:");
-        staticPredBox = new JCheckBox("Static              ");
+        staticPredBox = new JCheckBox("Static               ");
         staticPredBox.setSelected(true);
-        elasticPredBox = new JCheckBox("Elastic");
+        elasticPredBox = new JCheckBox("Elastic            ");
         
         // set up include/exclude choice
 		includeLabel = new JLabel("Including these terms ");
-        filterPredsBox = new JRadioButton("");
-        filterTextField = new JTextField("Include Term1; Term2; Term3; ...",30);
-		excludeLabel = new JLabel("Excluding these terms");
-        excludesPredsBox = new JRadioButton("");
-        excludesTextField = new JTextField("Exclude Term1; Term2; Term3; ...",30);
-		customPredsLabel = new JLabel("Test that ");
-		customPredsTextField = new JTextField("(Var1 > Var2) || Var4 > 100", 24);
+        filterPredsBox = new JCheckBox("");
+        filterTextField = new JTextField("Include Term1; Term2; Term3; ...",32);
+		excludeLabel = new JLabel("Excluding these terms ");
+        excludesPredsBox = new JCheckBox("");
+        excludesTextField = new JTextField("Exclude Term1; Term2; Term3; ...",32);
+		enableCheck = new JCheckBox("");
+		customPredsLabel = new JLabel("Test custom condition ");
+		customPredsTextField = new JTextField("(Var1 > Var2) || Var4 > 100", 32);
 		customPredsTextField.setToolTipText("Visit http://goo.gl/KjWAzL for syntax and supported functions.");
-		customSuspLabel = new JLabel("has susp ");
-		customSuspTextField = new JTextField("0.##  (i.e. 0.67)", 8);
+		//customSuspLabel = new JLabel("Contribution  Rate");
+		//customSuspTextField = new JTextField("0.##  (i.e. 0.67)", 8);
 		
 	    // instantiate padding cheats
 		finalDivider = new JLabel("-------------------------------------------------------------------------------------");
-		sliderPad[0] = new JLabel("            ");
-		sliderPad[1] = new JLabel("                   ");
-		sliderPad[2] = new JLabel("                 ");
+		sliderPad[0] = new JLabel("         ");
+		sliderPad[1] = new JLabel("                        ");
+		sliderPad[2] = new JLabel("                    ");
 	
 		blankDivider[0] = new JLabel("                              ");
 		blankDivider[1] = new JLabel("                                                ");
 		blankDivider[2] = new JLabel("                                                                                                                          ");
 		blankDivider[3] = new JLabel("                                                                                                                          ");
-		blankDivider[4] = new JLabel("                                                                                                                          ");
+		blankDivider[4] = new JLabel("                                                ");
 		blankDivider[5] = new JLabel("                                                            ");
 		blankDivider[6] = new JLabel("                       ");
 		blankDivider[7] = new JLabel("                       ");
@@ -238,14 +244,10 @@ public class StatDebugGUI extends JFrame{
 		spAlwaysButton.setSelected(true);
 		spLevelOneGroup.add(spNeverButton);
 		spLevelOneGroup.add(spAlwaysButton);
-		
-		ButtonGroup group = new ButtonGroup();
-		group.add(filterPredsBox);
-		group.add(excludesPredsBox);
        
-		levelOneDivider= new JLabel("---------------- Level 1 IV&V Check: Specify Requirements -------------------");
-		levelTwoDivider= new JLabel("------------ Level 2 IV&V Check: Identify the Conditions of Success -------------");
-		levelThreeDivider= new JLabel("--------------- Level 3 IV&V Check: Test Specific Hypotheses -----------------");
+		levelOneDivider= new JLabel("---------------- Level 1 V&V Check: Specify Requirements -------------------");
+		levelTwoDivider= new JLabel("----------------- Level 2 V&V Check: Identify Conditions --------------------");
+		levelThreeDivider= new JLabel("                                                                                                                                             ");
 		computeDivider = new JLabel("                                                                                                                          ");
 		
         
@@ -302,21 +304,22 @@ public class StatDebugGUI extends JFrame{
 		getContentPane().add(sliderPad[2]);
 		getContentPane().add(maxLabel);
 		getContentPane().add(maxTextField);
-		
+		getContentPane().add(prctExpectedLabel);
+		getContentPane().add(prctExpectedTextField);	
 		
 		getContentPane().add(blankDivider[4]);
         getContentPane().add(predTypeLabel);
         getContentPane().add(singleVarPredBox);
         getContentPane().add(scalarPairPredBox);
-        getContentPane().add(compoundPredBox);
+       
 		
 		
         getContentPane().add(predSpecLabel);
 		getContentPane().add(staticPredBox);
         getContentPane().add(elasticPredBox);
-        
+        getContentPane().add(compoundPredBox);
 		
-		getContentPane().add(blankDivider[5]);
+		//getContentPane().add(blankDivider[5]);
 		
 		getContentPane().add(filterPredsBox);
 		getContentPane().add(includeLabel);
@@ -329,10 +332,11 @@ public class StatDebugGUI extends JFrame{
 		getContentPane().add(blankDivider[7]);
 		getContentPane().add(levelThreeDivider);
 		
+		getContentPane().add(enableCheck);
 		getContentPane().add(customPredsLabel);
         getContentPane().add(customPredsTextField);
-		getContentPane().add(customSuspLabel);
-		getContentPane().add(customSuspTextField);
+		//getContentPane().add(customSuspLabel);
+		//getContentPane().add(customSuspTextField);
 		
 		getContentPane().add(finalDivider);
 		//getContentPane().add(computeDivider);
@@ -418,8 +422,7 @@ public class StatDebugGUI extends JFrame{
 					double slidervalue = Double.parseDouble(String.valueOf(outcomeCutoff.getValue()));
 					
 					double valToSet = min + ((max-min)*(slidervalue/100.0));
-					
-					outcomeValueTextField.setText(String.format("%.2f", valToSet));
+					outcomeValueTextField.setText(String.format("%.4f", valToSet));
 				}
             }
         });
@@ -441,9 +444,11 @@ public class StatDebugGUI extends JFrame{
 							valToSet = valToSet*100;
 							
 		                    outcomeCutoff.setValue((int) valToSet);
+							prctExpectedTextField.setText(getPrctExpected(selectedFile, enteredValue));
 						}
 						else
 						{
+							prctExpectedTextField.setText("ERR");
 		                    outcomeValueTextField.setText("ERR");
 		                    outcomeValueTextField.setToolTipText("Set Value in Range between min and max") ;
 						}
@@ -451,6 +456,7 @@ public class StatDebugGUI extends JFrame{
 	                }
 	                catch(Exception ex)
 	                {
+						prctExpectedTextField.setText("ERR");
 	                    outcomeValueTextField.setText("ERR");
 	                    outcomeValueTextField.setToolTipText("Set Value in Range between min and max") ;   
 	                }
@@ -469,7 +475,7 @@ public class StatDebugGUI extends JFrame{
 				 filterTextField.setText("Include Term1; Term2; Term3; ...");
 				 excludesTextField.setText("Exclude Term1; Term2; Term3; ...");
 				 customPredsTextField.setText("(Var1 > Var2) || Var4 > 100");
-				 customSuspTextField.setText("0.##  (i.e. 0.67)");
+				 //customSuspTextField.setText("0.##  (i.e. 0.67)");
 		   }
 		});
 		
@@ -487,10 +493,11 @@ public class StatDebugGUI extends JFrame{
 				String [] varNames = getVarnames(selectedFile);
 				
 				// update display
-				minTextField.setText(String.format("%.2f", min));
-				medTextField.setText(String.format("%.2f", med));
-				maxTextField.setText(String.format("%.2f", max));
-				outcomeValueTextField.setText(String.format("%.2f", med));
+				minTextField.setText(String.format("%.1f", min));
+				medTextField.setText(String.format("%.1f", med));
+				maxTextField.setText(String.format("%.1f", max));
+				outcomeValueTextField.setText(String.format("%.4f", med));
+				prctExpectedTextField.setText(getPrctExpected(selectedFile, med));
 				DefaultComboBoxModel singleVarLeftSideListModel = new DefaultComboBoxModel( varNames );
 				DefaultComboBoxModel spLeftSideListModel = new DefaultComboBoxModel( varNames );
 				DefaultComboBoxModel spRightSideListModel = new DefaultComboBoxModel( varNames );
@@ -568,62 +575,76 @@ public class StatDebugGUI extends JFrame{
 			double max = Double.parseDouble(maxTextField.getText());
 			double slidervalue = Double.parseDouble(String.valueOf(outcomeCutoff.getValue()));
 			double cutoffValue = min + ((max-min)*(slidervalue/100.0));
-
-			String suspHypString =  customSuspTextField.getText();
+			String suspHypString = "";
 			double suspHypothesis  = 4;
-			
-			try{
-					suspHypothesis = Double.parseDouble(suspHypString);
-					if (suspHypothesis < 0.0 || suspHypothesis > 1.0)
-					{
-			            customSuspTextField.setText("ERR");
-			            customSuspTextField.setToolTipText("Set Value in Range between 0.0 and 1.0") ;
-					}
-			}
-			catch (NumberFormatException e)
-            {
-	            customSuspTextField.setText("ERR");
-	            customSuspTextField.setToolTipText("Set Value in Range between 0.0 and 1.0") ;
-				return;
-            }
-			
 			String customPredicate = customPredsTextField.getText();
 			ArrayList<String> varList = new ArrayList<String>();
-			try
+			if (enableCheck.isSelected())
 			{
-				Expression expr = new Expression(customPredicate);
-				String [] varNames = getVarnames(selectedFile);
-				Iterator<String> exprTokens = expr.getExpressionTokenizer();
+				/**
+				suspHypString =  customSuspTextField.getText();
 				
-				while(exprTokens.hasNext())
-				{
-					String curToken = exprTokens.next().trim().replaceAll("\\s+","");
-					for (int i=0; i<varNames.length; i++)
-					{
-						String curVarInList = varNames[i].trim().replaceAll("\\s+","");
-						if (curToken.equals(curVarInList))
+			
+				try{
+						suspHypothesis = Double.parseDouble(suspHypString);
+						if (suspHypothesis < 0.0 || suspHypothesis > 1.0)
 						{
-							varList.add(curVarInList);
+				            customSuspTextField.setText("ERR");
+				            customSuspTextField.setToolTipText("Set Value in Range between 0.0 and 1.0") ;
+						}
+				}
+				catch (NumberFormatException e)
+	            {
+		            customSuspTextField.setText("ERR");
+		            customSuspTextField.setToolTipText("Set Value in Range between 0.0 and 1.0") ;
+					return;
+	            }
+			    **/
+				
+				try
+				{
+					Expression expr = new Expression(customPredicate);
+					String [] varNames = getVarnames(selectedFile);
+					Iterator<String> exprTokens = expr.getExpressionTokenizer();
+				
+					while(exprTokens.hasNext())
+					{
+						String curToken = exprTokens.next().trim().replaceAll("\\s+","");
+						for (int i=0; i<varNames.length; i++)
+						{
+							String curVarInList = varNames[i].trim().replaceAll("\\s+","");
+							if (curToken.equals(curVarInList))
+							{
+								varList.add(curVarInList);
+							}
 						}
 					}
-				}
-				for (int i=0; i<varList.size(); i++)
-				{
-					expr.with(varList.get(i), "1");
-				}
-				expr.eval();
+					for (int i=0; i<varList.size(); i++)
+					{
+						expr.with(varList.get(i), "1");
+					}
+					expr.eval();
 				
+				}
+				catch (Exception exception)
+				{
+					customPredsTextField.setText(exception.getMessage());
+					return;
+				}
 			}
-			catch (Exception exception)
+			
+			if (svAlwaysToTest.size()+svNeverToTest.size()+spAlwaysToTest.size()+spNeverToTest.size() > 0)
 			{
-				customPredsTextField.setText(exception.getMessage());
-				return;
+				LevelOneValidityCheck leveOne = new LevelOneValidityCheck(selectedFile.getAbsolutePath(), svAlwaysToTest, svNeverToTest, spAlwaysToTest, spNeverToTest);
 			}	
-			LevelOneValidityCheck leveOne = new LevelOneValidityCheck(selectedFile.getAbsolutePath(), svAlwaysToTest, svNeverToTest, spAlwaysToTest, spNeverToTest);
 	    	LevelTwoValidityCheck levelTwo = new LevelTwoValidityCheck(selectedFile.getAbsolutePath(), incSingleVar, incScalarPairs, incCompBool, incStatic, incElastic, 
 				                                                 showAll, contains, containsText, excludes, excludesText, 
 																 suspLimit, suspThreshold, top20, bottom20, failedCasesOpt, cutoffValue);
-			LevelThreeValidityCheck levelThree = new LevelThreeValidityCheck(selectedFile.getAbsolutePath(), cutoffValue, customPredicate, suspHypothesis, varList);
+			if(enableCheck.isSelected())
+			{
+				LevelThreeValidityCheck levelThree = new LevelThreeValidityCheck(selectedFile.getAbsolutePath(), cutoffValue, customPredicate, suspHypothesis, varList);
+			}
+			
 			
 		}
 		
@@ -632,7 +653,25 @@ public class StatDebugGUI extends JFrame{
     // brings up main window when run
     public static void main(String [] args)
     {
-    	StatDebugGUI gui = new StatDebugGUI();
+		try {
+		            // Set cross-platform Java L&F (also called "Metal")
+		        UIManager.setLookAndFeel(
+		            UIManager.getCrossPlatformLookAndFeelClassName());
+		    } 
+		    catch (UnsupportedLookAndFeelException e) {
+		       // handle exception
+		    }
+		    catch (ClassNotFoundException e) {
+		       // handle exception
+		    }
+		    catch (InstantiationException e) {
+		       // handle exception
+		    }
+		    catch (IllegalAccessException e) {
+		       // handle exception
+		    }
+        
+		    StatDebugGUI gui = new StatDebugGUI();
     }
 	
 	public static String[] getVarnames(File file)
@@ -664,6 +703,41 @@ public class StatDebugGUI extends JFrame{
 			varNames[i] = varList.get(i);
 		}
 		return varNames;
+	}
+	
+	public static String getPrctExpected(File file, double cutoff)
+	{
+		ArrayList<Double> outcomeList = new ArrayList<Double>();
+		try{
+			Scanner fileScanner = new Scanner(file);
+			// eat the headers
+			String line = fileScanner.nextLine();	
+
+			while(fileScanner.hasNextLine()){
+				line = fileScanner.nextLine();
+				StringTokenizer tok = new StringTokenizer(line, ",");
+				String buf = "";
+				while (tok.hasMoreTokens())
+				{
+					buf = tok.nextToken();
+				}
+				outcomeList.add(Double.parseDouble(buf));
+			}
+			fileScanner.close();
+		} catch (Exception e){
+			e.printStackTrace();
+		}	
+		double count = 0;
+		for (int i=0; i<outcomeList.size(); i++)
+		{
+			if (outcomeList.get(i) >= cutoff)
+			{
+				count++;
+			}
+		}
+		double prct = count/outcomeList.size();
+		
+		return "" + ((int) (prct*100))+"%";
 	}
 	
 	public static double findOutcome(File file, int choice)
