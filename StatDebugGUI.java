@@ -195,7 +195,7 @@ public class StatDebugGUI extends JFrame{
         singleVarPredBox.setSelected(true);
         scalarPairPredBox = new JCheckBox("Scalar Pairs                                           ");
         scalarPairPredBox.setSelected(true);
-        compoundPredBox = new JCheckBox("Compound                          ");
+        compoundPredBox = new JCheckBox("Compound                                 ");
 
         // set up pred type choice
         predSpecLabel = new JLabel("Cond Specificity:");
@@ -219,9 +219,9 @@ public class StatDebugGUI extends JFrame{
 		
 	    // instantiate padding cheats
 		finalDivider = new JLabel("-------------------------------------------------------------------------------------");
-		sliderPad[0] = new JLabel("         ");
-		sliderPad[1] = new JLabel("                        ");
-		sliderPad[2] = new JLabel("                    ");
+		sliderPad[0] = new JLabel("        ");
+		sliderPad[1] = new JLabel("                     ");
+		sliderPad[2] = new JLabel("                   ");
 	
 		blankDivider[0] = new JLabel("                              ");
 		blankDivider[1] = new JLabel("                                                ");
@@ -665,22 +665,11 @@ public class StatDebugGUI extends JFrame{
     {
 		try {
 		            // Set cross-platform Java L&F (also called "Metal")
-		        UIManager.setLookAndFeel(
-		            UIManager.getCrossPlatformLookAndFeelClassName());
-		    } 
-		    catch (UnsupportedLookAndFeelException e) {
-		       // handle exception
-		    }
-		    catch (ClassNotFoundException e) {
-		       // handle exception
-		    }
-		    catch (InstantiationException e) {
-		       // handle exception
-		    }
-		    catch (IllegalAccessException e) {
-		       // handle exception
-		    }
-        	setUIFont (new javax.swing.plaf.FontUIResource("Sans Serif",Font.PLAIN,12));
+		        UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+		    } catch (Exception e)
+			{
+				e.printStackTrace();
+			}
 		    StatDebugGUI gui = new StatDebugGUI();
 
     }
