@@ -24,20 +24,22 @@ public class LevelThreeValidityCheck {
 	private File inputFile;
 	private String customPredicate;
 	private double suspHypothesis;
-	private double outcomeCutoff;
+	private double lowOutcomeCutoff;
+	private double highOutcomeCutoff;
 	ArrayList<String> varList;
 
-	public LevelThreeValidityCheck (String pInputFilename, double pOutcomeCutoff, String pCustomPredicate, double pSuspHypothesis, ArrayList<String> pVarList){
+	public LevelThreeValidityCheck (String pInputFilename, double pLowOutcomeCutoff, double pHighOutcomeCutoff, String pCustomPredicate, double pSuspHypothesis, ArrayList<String> pVarList){
 		inputFile = new File(pInputFilename);
 		outputFilename = pInputFilename.replace(".csv","")+"-level-three-report.csv";
-		outcomeCutoff = pOutcomeCutoff;
+		lowOutcomeCutoff = pLowOutcomeCutoff;
+		highOutcomeCutoff = pHighOutcomeCutoff;
 		customPredicate = pCustomPredicate;
 		suspHypothesis = pSuspHypothesis;
 		varList = pVarList;
 		this.setInputFilename(pInputFilename);
 		this.setNumberOfVariables(computeNumberOfVariables());
 		this.setNumberOfSamples(computeNumberOfSamples());
-		copyData(samples, variables, outcomeCutoff);
+		copyData(samples, variables, lowOutcomeCutoff, highOutcomeCutoff);
 		double [][] valsForVarsInList = getValues(varList); 
 		BigDecimal[] testResults = evalExpr(customPredicate, varList, valsForVarsInList);
 		double totalWinningWhereTrue = getWinningCasesWhereTrue(testResults);
@@ -84,7 +86,7 @@ public class LevelThreeValidityCheck {
 	public void writeReport(double guess, double totalPredWin, double totalPredTrue){
 		double actualSusp = totalPredWin/totalPredTrue;
 		double winPrct = (totalPredWin/totalWins);
-		String output = "CustomPredicate,Correlation,Coverage,HarmonicMean\n";
+		String output = "Condition,Correlation,Coverage,HarmonicMean\n";
 		      output += customPredicate+","+String.format("%.4f", actualSusp)+","+String.format("%.4f", winPrct)+","+String.format("%4f",harmonicMean(actualSusp,winPrct));
 		try
 		{
@@ -142,7 +144,7 @@ public class LevelThreeValidityCheck {
 		variables = pVariables;
 	}
 
-	private void copyData(int pSamples, int pVariables, double outcomeCutoff){
+	private void copyData(int pSamples, int pVariables, double lOutcomeCutoff, double hOutcomeCutoff){
 		totalWins = 0;
 		dataset = new double [pSamples][pVariables];
 		datalabels = new String [pSamples][OTHER_COLS];
@@ -180,7 +182,8 @@ public class LevelThreeValidityCheck {
 				// last token goes to datalabels [OUTCOME]
 				String score = tok.nextToken();
 				double scoreForCompare = Double.parseDouble(score.trim());
-				if (scoreForCompare >= outcomeCutoff)
+				if ((scoreForCompare >= lOutcomeCutoff) &&
+					(scoreForCompare <= hOutcomeCutoff))
 				{
 					datalabels[i][OUTCOME] = WIN;
 				}

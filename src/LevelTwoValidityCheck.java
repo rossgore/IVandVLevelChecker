@@ -1,10 +1,13 @@
 import java.util.*;
 import java.io.*;
+import java.text.Normalizer;
 
 public class LevelTwoValidityCheck {
 
 	private String inputFilename;
 	private String outputFilename;
+	
+	private File matrixFile;
 
 	private static final int ID = 0;
 	private static final int OUTCOME = 1;
@@ -24,13 +27,16 @@ public class LevelTwoValidityCheck {
 	private static final String WIN = "1";
 	private static final String LOSS = "0";
 
-	private static double outcomeCutoff;
+	private static double lowOutcomeCutoff;
+	private static double highOutcomeCutoff;
 	
 	private static double totalWins = 0;
 
 
 	private int samples = 0; 
 	private int variables = 0;
+	
+	private static boolean [][] inclusionMatrix;
 
 	private double [][] dataset;
 	private String [][] datalabels;
@@ -74,14 +80,18 @@ public class LevelTwoValidityCheck {
 								boolean containsOpt, String containsStr,
 								boolean excludesOpt, String excludesStr,
 								boolean suspOpt, double suspThresh,
-	                            boolean top20Option, boolean bottom20Option, boolean failedCasesOption, double outcomeCutoffChoice){
-		outcomeCutoff = outcomeCutoffChoice;
+	                            boolean top20Option, boolean bottom20Option, boolean failedCasesOption, double lowOutcomeCutoffChoice,
+	                            double highOutcomeCutoffChoice, File pMatrixFile){
+		lowOutcomeCutoff = lowOutcomeCutoffChoice;
+		highOutcomeCutoff = highOutcomeCutoffChoice;
+		matrixFile = pMatrixFile;
 		inputFile = new File(pInputFilename);
 		outputFilename = pInputFilename.replace(".csv","")+"-level-two-report.csv";
 		this.setInputFilename(pInputFilename);
 		this.setNumberOfVariables(computeNumberOfVariables());
 		this.setNumberOfSamples(computeNumberOfSamples());
-		copyData(samples, variables, outcomeCutoff);
+		createInclusionMatrix(matrixFile, variables);
+		copyData(samples, variables, lowOutcomeCutoff, highOutcomeCutoff);
 		computeStats(samples, variables);
 		computeSingleStaticPreds(samples, variables);
 		computeSingleElasticPreds(samples, variables);
@@ -153,12 +163,12 @@ public class LevelTwoValidityCheck {
 		
 		if (failedCases)
 		{
-			output+=("Condition, Correlation, HarmonicMean\n");
+			output+=("Condition, Correlation, Coverage, HarmonicMean\n");
 		}
 		else
 		{
 			output+=("----------------------------------------------------------\n");
-			output+=("Condition, Correlation\n");
+			output+=("Condition, Correlation, Coverage, HarmonicMean\n");
 			output+=("----------------------------------------------------------\n");
 		}
 		
@@ -1805,7 +1815,7 @@ public class LevelTwoValidityCheck {
 			for (int j=0; j<pVariables; j++){
 				for (int k=0; k<pVariables; k++){
 					for (int l=0; l<pVariables; l++){
-						if ((j!= k) && (k != l)){
+						if ((j!= k) && (k != l) && inclusionMatrix[j][k] && inclusionMatrix[j][l]){
 							if (differenceset[i][j][k] < 0.0 && differenceset[i][j][l] < 0.0){
 								fail_scalar_pair_cb_preds[j][k][l][0]+=failExtent;
 								pass_scalar_pair_cb_preds[j][k][l][0]+=passExtent;
@@ -1877,17 +1887,19 @@ public class LevelTwoValidityCheck {
 			double passExtent = 1.0 - failExtent;
 			for (int j=0; j<pVariables; j++){
 				for (int k=0; k<pVariables; k++){
-					if (differenceset[i][j][k] < 0.0){
-						fail_scalarpair_preds[j][k][SMALL]+=failExtent;
-						pass_scalarpair_preds[j][k][SMALL]+=passExtent;
-					}
-					else if (differenceset[i][j][k] == 0.0){
-						fail_scalarpair_preds[j][k][MED]+=failExtent;
-						pass_scalarpair_preds[j][k][MED]+=passExtent;
-					}
-					else{
-						fail_scalarpair_preds[j][k][LARGE]+=failExtent;
-						pass_scalarpair_preds[j][k][LARGE]+=passExtent;
+					if (inclusionMatrix[j][k]){
+						if (differenceset[i][j][k] < 0.0){
+							fail_scalarpair_preds[j][k][SMALL]+=failExtent;
+							pass_scalarpair_preds[j][k][SMALL]+=passExtent;
+						}
+						else if (differenceset[i][j][k] == 0.0){
+							fail_scalarpair_preds[j][k][MED]+=failExtent;
+							pass_scalarpair_preds[j][k][MED]+=passExtent;
+						}
+						else{
+							fail_scalarpair_preds[j][k][LARGE]+=failExtent;
+							pass_scalarpair_preds[j][k][LARGE]+=passExtent;
+						}
 					}
 				}
 			}
@@ -1908,7 +1920,7 @@ public class LevelTwoValidityCheck {
 		}
 	}
 
-	private void copyData(int pSamples, int pVariables, double outcomeCutoff){
+	private void copyData(int pSamples, int pVariables, double lOutcomeCutoff, double hOutcomeCutoff){
 		totalWins = 0;
 		dataset = new double [pSamples][pVariables];
 		datalabels = new String [pSamples][OTHER_COLS];
@@ -1946,7 +1958,8 @@ public class LevelTwoValidityCheck {
 				// last token goes to datalabels [OUTCOME]
 				String score = tok.nextToken();
 				double scoreForCompare = Double.parseDouble(score.trim());
-				if (scoreForCompare >= outcomeCutoff)
+				if ((scoreForCompare >= lOutcomeCutoff) &&
+					(scoreForCompare <= hOutcomeCutoff))
 				{
 					datalabels[i][OUTCOME] = WIN;
 				}
@@ -2048,6 +2061,60 @@ public class LevelTwoValidityCheck {
 		return Math.sqrt(var(a));
 	}
 	
+	public static void createInclusionMatrix(File matrix, int pVariables)
+	{
+		 inclusionMatrix = new boolean [pVariables][pVariables];
+		
+		if (matrix == null)
+		{
+			for (int i=0; i<inclusionMatrix.length; i++)
+			{
+				for (int j=0; j<inclusionMatrix[0].length; j++)
+				{
+					inclusionMatrix[i][j] = true;
+				}
+			}
+		}
+		else
+		{
+			for (int i=0; i<inclusionMatrix.length; i++)
+			{
+				for (int j=0; j<inclusionMatrix[0].length; j++)
+				{
+					inclusionMatrix[i][j] = false;
+				}
+			}
+			ArrayList<String> matrixRows = readIntoArrayList(matrix);
+			// first row is headers lose them
+			matrixRows.remove(0);
+			// go through the matrix file and put *** in each blank space
+			for(int i=0; i<matrixRows.size(); i++)
+			{
+				String temp = matrixRows.get(i);
+				temp = temp.replaceAll(",", ", ");
+				matrixRows.set(i, temp);
+				
+			}
+			for(int i=0; i<matrixRows.size(); i++)
+			{
+				StringTokenizer tok = new StringTokenizer(matrixRows.get(i), ",");
+				// this is the variable label (kill it)
+				String label = tok.nextToken();
+				int j=0;
+				while (tok.hasMoreTokens())
+				{
+					String buf = tok.nextToken();
+					if (buf.trim().equals("X"))
+					{
+						inclusionMatrix[i][j] = true;
+						inclusionMatrix[j][i] = true;
+					}
+					j++;
+				}
+			}
+		}
+	}
+	
 	public static double harmonicMean(double a, double b)
 	{
 		double numer = 2 * a * b;
@@ -2077,6 +2144,33 @@ public class LevelTwoValidityCheck {
 			}
 		}
 		return false;
+	}
+	
+	public static ArrayList<String> readIntoArrayList(File f) {
+		ArrayList<String> result = new ArrayList<String>();
+		BufferedReader br = null;
+		try {
+			br = new BufferedReader(new FileReader(f));
+			String availalbe;
+			while((availalbe = br.readLine()) != null) {
+				availalbe = Normalizer.normalize(availalbe, Normalizer.Form.NFD);
+				result.add(availalbe);
+
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (br != null) {
+				try {
+					br.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return result;
 	}
 
 }

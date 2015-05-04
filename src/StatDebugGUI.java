@@ -27,8 +27,10 @@ public class StatDebugGUI extends JFrame{
 	
 	// gui variables used throughout class
     private static JButton fileButton;
+	private static JButton matrixButton;
     
     private static File selectedFile;
+	private static File matrixFile;
 	
 	// build a single variable predicate
 	private static JLabel singleVarReqLabel;
@@ -58,7 +60,7 @@ public class StatDebugGUI extends JFrame{
 	
 	// Level 2 stuff
 	private static JLabel  cutoffLabel;
-	private static JSlider outcomeCutoff;
+	private static RangeSlider outcomeCutoff;
 	private static JLabel outcomeValueLabel;
 	private static JTextField outcomeValueTextField;
 	private static JTextField minTextField;
@@ -137,6 +139,7 @@ public class StatDebugGUI extends JFrame{
         
         // set up file choice
         fileButton = new JButton("       Choose Log File To Upload .....       ");
+		matrixButton = new JButton("   Upload Inclusion Matrix   ");
 		calcButton = new JButton("Click Here To Perform V&V Checks");
 		clearButton = new JButton("Clear Fields");
 		
@@ -146,7 +149,7 @@ public class StatDebugGUI extends JFrame{
 		singleVarLeftSideList.setPreferredSize(new Dimension(120, 30));
 		singleVarOperatorList = new JComboBox(SUPPORTED_OPERATORS); 
 		singleVarRightSide = new JTextField("Enter #", 8);
-		singleVarSubmitReq = new JButton("Add Req");
+		singleVarSubmitReq = new JButton("Add/Del Req");
 		singleVarAlwaysButton = new JRadioButton(ALWAYS_STRING);
 		singleVarNeverButton = new JRadioButton(NEVER_STRING);
 		singleVarAlwaysList = new JTextArea(5, 22);
@@ -162,7 +165,7 @@ public class StatDebugGUI extends JFrame{
 		spOperatorList = new JComboBox(SUPPORTED_OPERATORS); 
 		spRightSideList = new JComboBox(DEFAULT_RIGHT_NAMES);
 		spRightSideList.setPreferredSize(new Dimension(120, 30));
-		spSubmitReq = new JButton("Add Req");
+		spSubmitReq = new JButton("Add/Del Req");
 		spAlwaysButton = new JRadioButton(ALWAYS_STRING);
 		spAlwaysList = new JTextArea(5, 22);
 		spAlwaysList.setEditable(false);
@@ -174,15 +177,15 @@ public class StatDebugGUI extends JFrame{
 		
 		
 		// set up level 2 exploration
-		cutoffLabel = new JLabel("Choose Output Threshold :  ");
-		outcomeCutoff = new JSlider(0, 100);
+		cutoffLabel = new JLabel("Choose The Output Range :  ");
+		outcomeCutoff = new RangeSlider(0, 100);
 		outcomeCutoff.setMajorTickSpacing(20);
 		outcomeCutoff.setMinorTickSpacing(5);
 		outcomeCutoff.setPreferredSize(new Dimension(350, 30));
 		outcomeCutoff.setPaintTicks(true);
 		
-		outcomeValueLabel = new JLabel("Value:");
-		outcomeValueTextField = new JTextField("N/A", 4);
+		outcomeValueLabel = new JLabel("Range:");
+		outcomeValueTextField = new JTextField("N/A", 7);
 		minLabel = new JLabel("Min");
 		medLabel = new JLabel("Mid");
 		maxLabel = new JLabel("Max");
@@ -192,7 +195,7 @@ public class StatDebugGUI extends JFrame{
 		medTextField.setEditable(false);
 		maxTextField = new JTextField(" N/A", 3);
 		maxTextField.setEditable(false);
-		prctExpectedLabel = new JLabel("Prct of Cases Meeting/Exceeding Threshold:");
+		prctExpectedLabel = new JLabel("Prct of Cases Within Specified Range:");
 		prctExpectedTextField = new JTextField("N/A", 3);
 		
         // set up pred type choice
@@ -229,7 +232,7 @@ public class StatDebugGUI extends JFrame{
 		sliderPad[1] = new JLabel("                        ");
 		sliderPad[2] = new JLabel("                        ");
 	
-		blankDivider[0] = new JLabel("                                                ");
+		blankDivider[0] = new JLabel("                                ");
 		blankDivider[1] = new JLabel("                                                ");
 		blankDivider[2] = new JLabel("                                                                                                                          ");
 		blankDivider[3] = new JLabel("                                                                                                                          ");
@@ -263,6 +266,7 @@ public class StatDebugGUI extends JFrame{
         setLayout(new FlowLayout(FlowLayout.LEFT));
 		getContentPane().add(blankDivider[0]);
         getContentPane().add(fileButton);
+		getContentPane().add(matrixButton);
 		getContentPane().add(blankDivider[1]);
         getContentPane().add(levelOneDivider);
 		
@@ -350,7 +354,6 @@ public class StatDebugGUI extends JFrame{
         getContentPane().add(calcButton);
 		getContentPane().add(clearButton);
 			
-        
         // create & assign action listener for button
         calcButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
@@ -362,27 +365,38 @@ public class StatDebugGUI extends JFrame{
             public void actionPerformed(ActionEvent evt) {
 				if (selectedFile != null)
 				{
-					try
+					if (singleVarNeverList.getSelectedText() != null)
 					{
-						String var = String.valueOf(singleVarLeftSideList.getSelectedItem()).trim();
-						String op  = String.valueOf(singleVarOperatorList.getSelectedItem()).trim();
-						double value =  Double.parseDouble(String.valueOf(singleVarRightSide.getText()).trim());
-						var = var.replaceAll("\\s+","");
-						op = op.replaceAll("\\s+","");
-						String requirement = var+" "+op+" "+value+"\n";
-						if (singleVarNeverButton.isSelected())
-						{
-							singleVarNeverList.setText(singleVarNeverList.getText() + requirement);
-						}
-						else
-						{
-							singleVarAlwaysList.setText(singleVarAlwaysList.getText() + requirement);
-						}
+						singleVarNeverList.setText(singleVarNeverList.getText().replace(singleVarNeverList.getSelectedText(),""));
 					}
-					catch (Exception e)
+					else if (singleVarAlwaysList.getSelectedText() != null)
 					{
-						System.out.println("Trouble parsing single variable requirement.");
-						return;
+						singleVarAlwaysList.setText(singleVarAlwaysList.getText().replace(singleVarAlwaysList.getSelectedText(),""));
+					}
+					else
+					{
+						try
+						{
+							String var = String.valueOf(singleVarLeftSideList.getSelectedItem()).trim();
+							String op  = String.valueOf(singleVarOperatorList.getSelectedItem()).trim();
+							double value =  Double.parseDouble(String.valueOf(singleVarRightSide.getText()).trim());
+							var = var.replaceAll("\\s+","");
+							op = op.replaceAll("\\s+","");
+							String requirement = var+" "+op+" "+value+"\n";
+							if (singleVarNeverButton.isSelected())
+							{
+								singleVarNeverList.setText(singleVarNeverList.getText() + requirement);
+							}
+							else
+							{
+								singleVarAlwaysList.setText(singleVarAlwaysList.getText() + requirement);
+							}
+						}
+						catch (Exception e)
+						{
+							System.out.println("Trouble parsing single variable requirement.");
+							return;
+						}
 					}
 				}
             }
@@ -392,28 +406,39 @@ public class StatDebugGUI extends JFrame{
             public void actionPerformed(ActionEvent evt) {
 				if (selectedFile != null)
 				{
-					try
+					if (spNeverList.getSelectedText() != null)
 					{
-						String var1 = String.valueOf(spLeftSideList.getSelectedItem()).trim();
-						String op  = String.valueOf(spOperatorList.getSelectedItem()).trim();
-						String var2 = String.valueOf(spRightSideList.getSelectedItem()).trim();
-						var1 = var1.replaceAll("\\s+","");
-						op = op.replaceAll("\\s+","");
-						var2=var2.replaceAll("\\s+","");
-						String requirement = var1+" "+op+" "+var2+"\n";
-						if (spNeverButton.isSelected())
-						{
-							spNeverList.setText(spNeverList.getText() + requirement);
-						}
-						else
-						{
-							spAlwaysList.setText(spAlwaysList.getText() + requirement);
-						}
+						spNeverList.setText(spNeverList.getText().replace(spNeverList.getSelectedText(),""));
 					}
-					catch (Exception e)
+					else if (spAlwaysList.getSelectedText() != null)
 					{
-						System.out.println("Trouble parsing scalar pairs requirement.");
-						return;
+						spAlwaysList.setText(spAlwaysList.getText().replace(spAlwaysList.getSelectedText(),""));
+					}
+					else
+					{
+						try
+						{
+							String var1 = String.valueOf(spLeftSideList.getSelectedItem()).trim();
+							String op  = String.valueOf(spOperatorList.getSelectedItem()).trim();
+							String var2 = String.valueOf(spRightSideList.getSelectedItem()).trim();
+							var1 = var1.replaceAll("\\s+","");
+							op = op.replaceAll("\\s+","");
+							var2=var2.replaceAll("\\s+","");
+							String requirement = var1+" "+op+" "+var2+"\n";
+							if (spNeverButton.isSelected())
+							{
+								spNeverList.setText(spNeverList.getText() + requirement);
+							}
+							else
+							{
+								spAlwaysList.setText(spAlwaysList.getText() + requirement);
+							}
+						}
+						catch (Exception e)
+						{
+							System.out.println("Trouble parsing scalar pairs requirement.");
+							return;
+						}
 					}
 				}
             }
@@ -428,7 +453,15 @@ public class StatDebugGUI extends JFrame{
 					double slidervalue = Double.parseDouble(String.valueOf(outcomeCutoff.getValue()));
 					
 					double valToSet = min + ((max-min)*(slidervalue/100.0));
-					outcomeValueTextField.setText(String.format("%.4f", valToSet));
+					
+					double upperSlidervalue = Double.parseDouble(String.valueOf(outcomeCutoff.getUpperValue()));
+					
+					double upperValToSet = min + ((max-min)*(upperSlidervalue/100.0));
+					
+					String lowS = String.format("%.2f", valToSet);
+					String highS = String.format("%.2f", upperValToSet);
+					outcomeValueTextField.setText(lowS+"-"+highS);
+					prctExpectedTextField.setText(getPrctExpected(selectedFile, valToSet, upperValToSet));
 				}
             }
         });
@@ -440,23 +473,34 @@ public class StatDebugGUI extends JFrame{
 				{
 	                try
 	                {
-						double enteredValue = Double.parseDouble(outcomeValueTextField.getText());
+						String enteredText  = outcomeValueTextField.getText();
+						StringTokenizer tok = new StringTokenizer(enteredText,"-");
+						
+						double lowEnteredValue = Double.parseDouble(tok.nextToken().trim());
+						double highEnteredValue = Double.parseDouble(tok.nextToken().trim());
 						double min = Double.parseDouble(minTextField.getText());
 						double max = Double.parseDouble(maxTextField.getText());
 						
-						if (enteredValue >= min && enteredValue <= max)
+						if ( (lowEnteredValue >= min  && lowEnteredValue  <= max) &&
+							 (highEnteredValue >= min && highEnteredValue <= max) &&
+							 (lowEnteredValue < highEnteredValue)
+						   )
 						{
-							double valToSet = (enteredValue-min)/(max-min);
-							valToSet = valToSet*100;
+							double lowValToSet = (lowEnteredValue-min)/(max-min);
+							lowValToSet = lowValToSet*100;
+		                    outcomeCutoff.setValue((int) lowValToSet);
 							
-		                    outcomeCutoff.setValue((int) valToSet);
-							prctExpectedTextField.setText(getPrctExpected(selectedFile, enteredValue));
+							double highValToSet = (highEnteredValue-min)/(max-min);
+							highValToSet = highValToSet*100;
+		                    outcomeCutoff.setUpperValue((int) highValToSet);
+							
+							prctExpectedTextField.setText(getPrctExpected(selectedFile, lowEnteredValue, highEnteredValue));
 						}
 						else
 						{
 							prctExpectedTextField.setText("ERR");
 		                    outcomeValueTextField.setText("ERR");
-		                    outcomeValueTextField.setToolTipText("Set Value in Range between min and max") ;
+		                    outcomeValueTextField.setToolTipText("Illegal Range") ;
 						}
 						
 	                }
@@ -464,7 +508,7 @@ public class StatDebugGUI extends JFrame{
 	                {
 						prctExpectedTextField.setText("ERR");
 	                    outcomeValueTextField.setText("ERR");
-	                    outcomeValueTextField.setToolTipText("Set Value in Range between min and max") ;   
+	                    outcomeValueTextField.setToolTipText("Illegal Range") ;   
 	                }
 				}     
 		    }
@@ -477,7 +521,8 @@ public class StatDebugGUI extends JFrame{
 				 spAlwaysList.setText("");
 				 spNeverList.setText("");
 				 outcomeValueTextField.setText(medTextField.getText());
-				 outcomeCutoff.setValue(50);
+				 outcomeCutoff.setValue(25);
+				 outcomeCutoff.setUpperValue(75);
 				 filterTextField.setText("Include Term1; Term2; Term3; ...");
 				 excludesTextField.setText("Exclude Term1; Term2; Term3; ...");
 				 customPredsTextField.setText("(Var1 > Var2) || Var4 > 100");
@@ -485,16 +530,28 @@ public class StatDebugGUI extends JFrame{
 		   }
 		});
 		
+        matrixButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
+              JFileChooser fileChooser = new JFileChooser();
+              int returnValue = fileChooser.showOpenDialog(null);
+              if (returnValue == JFileChooser.APPROVE_OPTION) {
+                matrixFile = fileChooser.getSelectedFile();
+               }
+          }
+        });
+		
         fileButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
               JFileChooser fileChooser = new JFileChooser();
               int returnValue = fileChooser.showOpenDialog(null);
               if (returnValue == JFileChooser.APPROVE_OPTION) {
                 selectedFile = fileChooser.getSelectedFile();
+				setTitle(selectedFile.getName());
 				
 				double min = findOutcome(selectedFile, MIN);
 				double max = findOutcome(selectedFile, MAX);
 				double med = (max+min)/2;
+				double quarter = (max+min)/4;
 				
 				String [] varNames = getVarnames(selectedFile);
 				
@@ -502,8 +559,12 @@ public class StatDebugGUI extends JFrame{
 				minTextField.setText(String.format("%.1f", min));
 				medTextField.setText(String.format("%.1f", med));
 				maxTextField.setText(String.format("%.1f", max));
-				outcomeValueTextField.setText(String.format("%.4f", med));
-				prctExpectedTextField.setText(getPrctExpected(selectedFile, med));
+				String quarterString = String.format("%.2f", quarter);
+				outcomeCutoff.setValue(25);
+				outcomeCutoff.setUpperValue(75);
+				String upperString = String.format("%.2f", quarter+med);
+				outcomeValueTextField.setText(quarterString+"-"+upperString);
+				prctExpectedTextField.setText(getPrctExpected(selectedFile, quarter, (med+quarter)));
 				DefaultComboBoxModel singleVarLeftSideListModel = new DefaultComboBoxModel( varNames );
 				DefaultComboBoxModel spLeftSideListModel = new DefaultComboBoxModel( varNames );
 				DefaultComboBoxModel spRightSideListModel = new DefaultComboBoxModel( varNames );
@@ -513,6 +574,7 @@ public class StatDebugGUI extends JFrame{
               }
             }
           });
+
     }
     
     /**
@@ -527,7 +589,8 @@ public class StatDebugGUI extends JFrame{
         
         
         // set up file choice
-        fileButton = new JButton("       Choose Log File To Upload .....       ");
+        fileButton = new JButton("  Choose Log File To Upload  ");
+	    matrixButton = new JButton("   Upload Inclusion Matrix   ");
 		calcButton = new JButton("Click Here To Perform V&V Checks");
 		clearButton = new JButton("Clear Fields");
 		
@@ -536,8 +599,8 @@ public class StatDebugGUI extends JFrame{
 		singleVarLeftSideList = new JComboBox(DEFAULT_LEFT_NAMES);
 		singleVarLeftSideList.setPreferredSize(new Dimension(120, 30));
 		singleVarOperatorList = new JComboBox(SUPPORTED_OPERATORS); 
-		singleVarRightSide = new JTextField("Enter #", 8);
-		singleVarSubmitReq = new JButton("Add Req");
+		singleVarRightSide = new JTextField("Enter #", 9);
+		singleVarSubmitReq = new JButton("Add/Del Req");
 		singleVarAlwaysButton = new JRadioButton(ALWAYS_STRING);
 		singleVarNeverButton = new JRadioButton(NEVER_STRING);
 		singleVarAlwaysList = new JTextArea(5, 22);
@@ -553,7 +616,7 @@ public class StatDebugGUI extends JFrame{
 		spOperatorList = new JComboBox(SUPPORTED_OPERATORS); 
 		spRightSideList = new JComboBox(DEFAULT_RIGHT_NAMES);
 		spRightSideList.setPreferredSize(new Dimension(120, 30));
-		spSubmitReq = new JButton("Add Req");
+		spSubmitReq = new JButton("Add/Del Req");
 		spAlwaysButton = new JRadioButton(ALWAYS_STRING);
 		spAlwaysList = new JTextArea(5, 22);
 		spAlwaysList.setEditable(false);
@@ -565,15 +628,15 @@ public class StatDebugGUI extends JFrame{
 		
 		
 		// set up level 2 exploration
-		cutoffLabel = new JLabel("Choose Output Threshold :  ");
-		outcomeCutoff = new JSlider(0, 100);
+		cutoffLabel = new JLabel("Choose The Output Range :  ");
+		outcomeCutoff = new RangeSlider(0, 100);
 		outcomeCutoff.setMajorTickSpacing(20);
 		outcomeCutoff.setMinorTickSpacing(5);
 		outcomeCutoff.setPreferredSize(new Dimension(350, 30));
 		outcomeCutoff.setPaintTicks(true);
 		
-		outcomeValueLabel = new JLabel("Value:");
-		outcomeValueTextField = new JTextField("N/A", 4);
+		outcomeValueLabel = new JLabel("Range:");
+		outcomeValueTextField = new JTextField("N/A", 7);
 		minLabel = new JLabel("Min");
 		medLabel = new JLabel("Mid");
 		maxLabel = new JLabel("Max");
@@ -583,7 +646,7 @@ public class StatDebugGUI extends JFrame{
 		medTextField.setEditable(false);
 		maxTextField = new JTextField(" N/A", 3);
 		maxTextField.setEditable(false);
-		prctExpectedLabel = new JLabel("Prct of Cases Meeting/Exceeding Threshold:");
+		prctExpectedLabel = new JLabel("Prct of Cases Within Specified Range:");
 		prctExpectedTextField = new JTextField("N/A", 3);
 		
         // set up pred type choice
@@ -616,12 +679,12 @@ public class StatDebugGUI extends JFrame{
 		
 	    // instantiate padding cheats
 		finalDivider = new JLabel("-------------------------------------------------------------------------------------");
-		sliderPad[0] = new JLabel("        ");
+		sliderPad[0] = new JLabel(" ");
 		sliderPad[1] = new JLabel("                     ");
 		sliderPad[2] = new JLabel("                   ");
 	
-		blankDivider[0] = new JLabel("                              ");
-		blankDivider[1] = new JLabel("                                                ");
+		blankDivider[0] = new JLabel("              ");
+		blankDivider[1] = new JLabel("                                            ");
 		blankDivider[2] = new JLabel("                                                                                                                          ");
 		blankDivider[3] = new JLabel("                                                                                                                          ");
 		blankDivider[4] = new JLabel("                                                ");
@@ -642,8 +705,8 @@ public class StatDebugGUI extends JFrame{
 		spLevelOneGroup.add(spNeverButton);
 		spLevelOneGroup.add(spAlwaysButton);
        
-		levelOneDivider= new JLabel("---------------- Level 1 V&V Check: Specify Requirements -------------------");
-		levelTwoDivider= new JLabel("----------------- Level 2 V&V Check: Identify Conditions --------------------");
+		levelOneDivider= new JLabel("------------------- Level 1 V&V Check: Specify Requirements ---------------------");
+		levelTwoDivider= new JLabel("------------------- Level 2 V&V Check: Identify Conditions ----------------------");
 		levelThreeDivider= new JLabel("                                                                                                                                             ");
 		computeDivider = new JLabel("                                                                                                                          ");
 		
@@ -654,6 +717,7 @@ public class StatDebugGUI extends JFrame{
         setLayout(new FlowLayout(FlowLayout.LEFT));
 		getContentPane().add(blankDivider[0]);
         getContentPane().add(fileButton);
+		getContentPane().add(matrixButton);
 		getContentPane().add(blankDivider[1]);
         getContentPane().add(levelOneDivider);
 		
@@ -753,27 +817,38 @@ public class StatDebugGUI extends JFrame{
             public void actionPerformed(ActionEvent evt) {
 				if (selectedFile != null)
 				{
-					try
+					if (singleVarNeverList.getSelectedText() != null)
 					{
-						String var = String.valueOf(singleVarLeftSideList.getSelectedItem()).trim();
-						String op  = String.valueOf(singleVarOperatorList.getSelectedItem()).trim();
-						double value =  Double.parseDouble(String.valueOf(singleVarRightSide.getText()).trim());
-						var = var.replaceAll("\\s+","");
-						op = op.replaceAll("\\s+","");
-						String requirement = var+" "+op+" "+value+"\n";
-						if (singleVarNeverButton.isSelected())
-						{
-							singleVarNeverList.setText(singleVarNeverList.getText() + requirement);
-						}
-						else
-						{
-							singleVarAlwaysList.setText(singleVarAlwaysList.getText() + requirement);
-						}
+						singleVarNeverList.setText(singleVarNeverList.getText().replace(singleVarNeverList.getSelectedText(),""));
 					}
-					catch (Exception e)
+					else if (singleVarAlwaysList.getSelectedText() != null)
 					{
-						System.out.println("Trouble parsing single variable requirement.");
-						return;
+						singleVarAlwaysList.setText(singleVarAlwaysList.getText().replace(singleVarAlwaysList.getSelectedText(),""));
+					}
+					else
+					{
+						try
+						{
+							String var = String.valueOf(singleVarLeftSideList.getSelectedItem()).trim();
+							String op  = String.valueOf(singleVarOperatorList.getSelectedItem()).trim();
+							double value =  Double.parseDouble(String.valueOf(singleVarRightSide.getText()).trim());
+							var = var.replaceAll("\\s+","");
+							op = op.replaceAll("\\s+","");
+							String requirement = var+" "+op+" "+value+"\n";
+							if (singleVarNeverButton.isSelected())
+							{
+								singleVarNeverList.setText(singleVarNeverList.getText() + requirement);
+							}
+							else
+							{
+								singleVarAlwaysList.setText(singleVarAlwaysList.getText() + requirement);
+							}
+						}
+						catch (Exception e)
+						{
+							System.out.println("Trouble parsing single variable requirement.");
+							return;
+						}
 					}
 				}
             }
@@ -783,28 +858,39 @@ public class StatDebugGUI extends JFrame{
             public void actionPerformed(ActionEvent evt) {
 				if (selectedFile != null)
 				{
-					try
+					if (spNeverList.getSelectedText() != null)
 					{
-						String var1 = String.valueOf(spLeftSideList.getSelectedItem()).trim();
-						String op  = String.valueOf(spOperatorList.getSelectedItem()).trim();
-						String var2 = String.valueOf(spRightSideList.getSelectedItem()).trim();
-						var1 = var1.replaceAll("\\s+","");
-						op = op.replaceAll("\\s+","");
-						var2=var2.replaceAll("\\s+","");
-						String requirement = var1+" "+op+" "+var2+"\n";
-						if (spNeverButton.isSelected())
-						{
-							spNeverList.setText(spNeverList.getText() + requirement);
-						}
-						else
-						{
-							spAlwaysList.setText(spAlwaysList.getText() + requirement);
-						}
+						spNeverList.setText(spNeverList.getText().replace(spNeverList.getSelectedText(),""));
 					}
-					catch (Exception e)
+					else if (spAlwaysList.getSelectedText() != null)
 					{
-						System.out.println("Trouble parsing scalar pairs requirement.");
-						return;
+						spAlwaysList.setText(spAlwaysList.getText().replace(spAlwaysList.getSelectedText(),""));
+					}
+					else
+					{
+						try
+						{
+							String var1 = String.valueOf(spLeftSideList.getSelectedItem()).trim();
+							String op  = String.valueOf(spOperatorList.getSelectedItem()).trim();
+							String var2 = String.valueOf(spRightSideList.getSelectedItem()).trim();
+							var1 = var1.replaceAll("\\s+","");
+							op = op.replaceAll("\\s+","");
+							var2=var2.replaceAll("\\s+","");
+							String requirement = var1+" "+op+" "+var2+"\n";
+							if (spNeverButton.isSelected())
+							{
+								spNeverList.setText(spNeverList.getText() + requirement);
+							}
+							else
+							{
+								spAlwaysList.setText(spAlwaysList.getText() + requirement);
+							}
+						}
+						catch (Exception e)
+						{
+							System.out.println("Trouble parsing scalar pairs requirement.");
+							return;
+						}
 					}
 				}
             }
@@ -819,7 +905,15 @@ public class StatDebugGUI extends JFrame{
 					double slidervalue = Double.parseDouble(String.valueOf(outcomeCutoff.getValue()));
 					
 					double valToSet = min + ((max-min)*(slidervalue/100.0));
-					outcomeValueTextField.setText(String.format("%.4f", valToSet));
+					
+					double upperSlidervalue = Double.parseDouble(String.valueOf(outcomeCutoff.getUpperValue()));
+					
+					double upperValToSet = min + ((max-min)*(upperSlidervalue/100.0));
+					
+					String lowS = String.format("%.2f", valToSet);
+					String highS = String.format("%.2f", upperValToSet);
+					outcomeValueTextField.setText(lowS+"-"+highS);
+					prctExpectedTextField.setText(getPrctExpected(selectedFile, valToSet, upperValToSet));
 				}
             }
         });
@@ -831,23 +925,34 @@ public class StatDebugGUI extends JFrame{
 				{
 	                try
 	                {
-						double enteredValue = Double.parseDouble(outcomeValueTextField.getText());
+						String enteredText  = outcomeValueTextField.getText();
+						StringTokenizer tok = new StringTokenizer(enteredText,"-");
+						
+						double lowEnteredValue = Double.parseDouble(tok.nextToken().trim());
+						double highEnteredValue = Double.parseDouble(tok.nextToken().trim());
 						double min = Double.parseDouble(minTextField.getText());
 						double max = Double.parseDouble(maxTextField.getText());
 						
-						if (enteredValue >= min && enteredValue <= max)
+						if ( (lowEnteredValue >= min  && lowEnteredValue  <= max) &&
+							 (highEnteredValue >= min && highEnteredValue <= max) &&
+							 (lowEnteredValue < highEnteredValue)
+						   )
 						{
-							double valToSet = (enteredValue-min)/(max-min);
-							valToSet = valToSet*100;
+							double lowValToSet = (lowEnteredValue-min)/(max-min);
+							lowValToSet = lowValToSet*100;
+		                    outcomeCutoff.setValue((int) lowValToSet);
 							
-		                    outcomeCutoff.setValue((int) valToSet);
-							prctExpectedTextField.setText(getPrctExpected(selectedFile, enteredValue));
+							double highValToSet = (highEnteredValue-min)/(max-min);
+							highValToSet = highValToSet*100;
+		                    outcomeCutoff.setUpperValue((int) highValToSet);
+							
+							prctExpectedTextField.setText(getPrctExpected(selectedFile, lowEnteredValue, highEnteredValue));
 						}
 						else
 						{
 							prctExpectedTextField.setText("ERR");
 		                    outcomeValueTextField.setText("ERR");
-		                    outcomeValueTextField.setToolTipText("Set Value in Range between min and max") ;
+		                    outcomeValueTextField.setToolTipText("Illegal Range") ;
 						}
 						
 	                }
@@ -855,7 +960,7 @@ public class StatDebugGUI extends JFrame{
 	                {
 						prctExpectedTextField.setText("ERR");
 	                    outcomeValueTextField.setText("ERR");
-	                    outcomeValueTextField.setToolTipText("Set Value in Range between min and max") ;   
+	                    outcomeValueTextField.setToolTipText("Illegal Range") ;   
 	                }
 				}     
 		    }
@@ -868,7 +973,8 @@ public class StatDebugGUI extends JFrame{
 				 spAlwaysList.setText("");
 				 spNeverList.setText("");
 				 outcomeValueTextField.setText(medTextField.getText());
-				 outcomeCutoff.setValue(50);
+				 outcomeCutoff.setValue(25);
+				 outcomeCutoff.setUpperValue(75);
 				 filterTextField.setText("Include Term1; Term2; Term3; ...");
 				 excludesTextField.setText("Exclude Term1; Term2; Term3; ...");
 				 customPredsTextField.setText("(Var1 > Var2) || Var4 > 100");
@@ -876,16 +982,28 @@ public class StatDebugGUI extends JFrame{
 		   }
 		});
 		
+        matrixButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
+              JFileChooser fileChooser = new JFileChooser();
+              int returnValue = fileChooser.showOpenDialog(null);
+              if (returnValue == JFileChooser.APPROVE_OPTION) {
+                matrixFile = fileChooser.getSelectedFile();
+               }
+          }
+        });
+		
         fileButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
               JFileChooser fileChooser = new JFileChooser();
               int returnValue = fileChooser.showOpenDialog(null);
               if (returnValue == JFileChooser.APPROVE_OPTION) {
                 selectedFile = fileChooser.getSelectedFile();
+				setTitle(selectedFile.getName());
 				
 				double min = findOutcome(selectedFile, MIN);
 				double max = findOutcome(selectedFile, MAX);
 				double med = (max+min)/2;
+				double quarter = (max+min)/4;
 				
 				String [] varNames = getVarnames(selectedFile);
 				
@@ -893,8 +1011,12 @@ public class StatDebugGUI extends JFrame{
 				minTextField.setText(String.format("%.1f", min));
 				medTextField.setText(String.format("%.1f", med));
 				maxTextField.setText(String.format("%.1f", max));
-				outcomeValueTextField.setText(String.format("%.4f", med));
-				prctExpectedTextField.setText(getPrctExpected(selectedFile, med));
+				String quarterString = String.format("%.2f", quarter);
+				outcomeCutoff.setValue(25);
+				outcomeCutoff.setUpperValue(75);
+				String upperString = String.format("%.2f", quarter+med);
+				outcomeValueTextField.setText(quarterString+"-"+upperString);
+				prctExpectedTextField.setText(getPrctExpected(selectedFile, quarter, (med+quarter)));
 				DefaultComboBoxModel singleVarLeftSideListModel = new DefaultComboBoxModel( varNames );
 				DefaultComboBoxModel spLeftSideListModel = new DefaultComboBoxModel( varNames );
 				DefaultComboBoxModel spRightSideListModel = new DefaultComboBoxModel( varNames );
@@ -970,8 +1092,10 @@ public class StatDebugGUI extends JFrame{
 			
 			double min = Double.parseDouble(minTextField.getText());
 			double max = Double.parseDouble(maxTextField.getText());
-			double slidervalue = Double.parseDouble(String.valueOf(outcomeCutoff.getValue()));
-			double cutoffValue = min + ((max-min)*(slidervalue/100.0));
+			double lowSlidervalue = Double.parseDouble(String.valueOf(outcomeCutoff.getValue()));
+			double lowCutoffValue = min + ((max-min)*(lowSlidervalue/100.0));
+			double highSlidervalue = Double.parseDouble(String.valueOf(outcomeCutoff.getUpperValue()));
+			double highCutoffValue = min + ((max-min)*(highSlidervalue/100.0));
 			String suspHypString = "";
 			double suspHypothesis  = 4;
 			String customPredicate = customPredsTextField.getText();
@@ -1036,10 +1160,10 @@ public class StatDebugGUI extends JFrame{
 			}	
 	    	LevelTwoValidityCheck levelTwo = new LevelTwoValidityCheck(selectedFile.getAbsolutePath(), incSingleVar, incScalarPairs, incCompBool, incStatic, incElastic, 
 				                                                 showAll, contains, containsText, excludes, excludesText, 
-																 suspLimit, suspThreshold, top20, bottom20, failedCasesOpt, cutoffValue);
+																 suspLimit, suspThreshold, top20, bottom20, failedCasesOpt, lowCutoffValue, highCutoffValue, matrixFile);
 			if(enableCheck.isSelected())
 			{
-				LevelThreeValidityCheck levelThree = new LevelThreeValidityCheck(selectedFile.getAbsolutePath(), cutoffValue, customPredicate, suspHypothesis, varList);
+				LevelThreeValidityCheck levelThree = new LevelThreeValidityCheck(selectedFile.getAbsolutePath(), lowCutoffValue, highCutoffValue, customPredicate, suspHypothesis, varList);
 			}
 			
 			
@@ -1077,7 +1201,7 @@ public class StatDebugGUI extends JFrame{
 		return varNames;
 	}
 	
-	public static String getPrctExpected(File file, double cutoff)
+	public static String getPrctExpected(File file, double lowValue, double highValue)
 	{
 		ArrayList<Double> outcomeList = new ArrayList<Double>();
 		try{
@@ -1102,7 +1226,8 @@ public class StatDebugGUI extends JFrame{
 		double count = 0;
 		for (int i=0; i<outcomeList.size(); i++)
 		{
-			if (outcomeList.get(i) >= cutoff)
+			if ((outcomeList.get(i) >= lowValue) &&
+			    (outcomeList.get(i) <= highValue))
 			{
 				count++;
 			}
