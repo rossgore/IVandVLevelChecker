@@ -185,7 +185,7 @@ public class StatDebugGUI extends JFrame{
 		outcomeCutoff.setPaintTicks(true);
 		
 		outcomeValueLabel = new JLabel("Range:");
-		outcomeValueTextField = new JTextField("N/A", 7);
+		outcomeValueTextField = new JTextField("N/A", 6);
 		minLabel = new JLabel("Min");
 		medLabel = new JLabel("Mid");
 		maxLabel = new JLabel("Max");
