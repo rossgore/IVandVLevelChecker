@@ -185,7 +185,7 @@ public class StatDebugGUI extends JFrame{
 		outcomeCutoff.setPaintTicks(true);
 		
 		outcomeValueLabel = new JLabel("Range:");
-		outcomeValueTextField = new JTextField("N/A", 6);
+		outcomeValueTextField = new JTextField("N/A", 7);
 		minLabel = new JLabel("Min");
 		medLabel = new JLabel("Mid");
 		maxLabel = new JLabel("Max");
@@ -228,7 +228,7 @@ public class StatDebugGUI extends JFrame{
 		
 	    // instantiate padding cheats
 		finalDivider = new JLabel("--------------------------------------------------------------------------------------------------------------------------------------");
-		sliderPad[0] = new JLabel("              ");
+		sliderPad[0] = new JLabel("  ");
 		sliderPad[1] = new JLabel("                        ");
 		sliderPad[2] = new JLabel("                        ");
 	
