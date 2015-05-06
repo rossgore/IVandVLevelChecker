@@ -571,6 +571,7 @@ public class StatDebugGUI extends JFrame{
 				singleVarLeftSideList.setModel( singleVarLeftSideListModel );
 				spLeftSideList.setModel(spLeftSideListModel);
 				spRightSideList.setModel(spRightSideListModel);
+				createMatrixTemplate();
               }
             }
           });
@@ -1023,6 +1024,7 @@ public class StatDebugGUI extends JFrame{
 				singleVarLeftSideList.setModel( singleVarLeftSideListModel );
 				spLeftSideList.setModel(spLeftSideListModel);
 				spRightSideList.setModel(spRightSideListModel);
+				createMatrixTemplate();
               }
             }
           });
@@ -1235,6 +1237,62 @@ public class StatDebugGUI extends JFrame{
 		double prct = count/outcomeList.size();
 		
 		return "" + ((int) (prct*100))+"%";
+	}
+	
+	public static void createMatrixTemplate()
+	{
+		String matrixTemplateName = selectedFile.getAbsolutePath().replace(".csv","")+"-InclusionMatrix.csv";
+		try {
+ 		  File f = new File(matrixTemplateName);
+		  if( !f.exists() && !f.isDirectory()) {
+  			Scanner fileScanner = new Scanner(selectedFile);
+  			// grab the headers
+  			String line = fileScanner.nextLine();	 
+			String output = createLabels(line);
+  	   		PrintWriter out = new PrintWriter(matrixTemplateName);
+  	   		out.println(output);
+  	   		out.close(); 
+		  }
+			
+	    } catch (IOException e) {
+		   e.printStackTrace();
+	    }
+	}
+	
+	public static String createLabels(String headersString)
+	{
+		String matrixTemplate = "Inclusion Matrix Template,";
+		ArrayList<String> headers = new ArrayList<String>();
+		StringTokenizer tok = new StringTokenizer(headersString, ",");
+		while (tok.hasMoreTokens())
+		{
+			String buf = tok.nextToken().trim();
+			headers.add(buf);
+		}
+		for (int i=0; i<headers.size(); i++)
+		{
+			if (i!=0 && i!= headers.size()-1 && i!= headers.size()-2)
+			{
+				matrixTemplate += headers.get(i)+",";
+			}
+			if (i == headers.size()-2)
+			{
+				matrixTemplate += headers.get(i)+"\n";
+			}
+		}
+		for (int i=0; i<headers.size(); i++)
+		{
+			if (i!=0 && i!= headers.size()-1)
+			{
+				matrixTemplate += headers.get(i);
+				for (int j=2; j<headers.size()-1; j++)
+				{
+						matrixTemplate += ",";
+				}
+				matrixTemplate+="\n";
+			}
+		}
+		return matrixTemplate;
 	}
 	
 	public static double findOutcome(File file, int choice)
