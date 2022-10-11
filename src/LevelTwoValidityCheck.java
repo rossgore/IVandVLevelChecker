@@ -43,6 +43,7 @@ public class LevelTwoValidityCheck {
 	private String [] varlabels;
 
 	private double [][] statsset;
+	private double [][][] scalarpair_statsset;
 
 	private double [][][] differenceset;
 
@@ -55,6 +56,9 @@ public class LevelTwoValidityCheck {
 
 	private double [][][] pass_scalarpair_preds;
 	private double [][][] fail_scalarpair_preds;
+	
+	private double [][][] pass_elastic_scalarpair_preds;
+	private double [][][] fail_elastic_scalarpair_preds;
 	
 	private double [][][] pass_static_cb_preds;
 	private double [][][] fail_static_cb_preds;
@@ -112,9 +116,15 @@ public class LevelTwoValidityCheck {
 		
 		// scalar pair stuff
 		computeDiffs(samples, variables);
+		computeElasticScalarPairStats(samples, variables);
 		computeScalarPairPreds(samples, variables);
+		computeElasticScalarPairPreds(samples, variables);
+		
 		double [][][] scalarPairSusp = compute3DSusp(pass_scalarpair_preds, fail_scalarpair_preds);
 		double [][][] scalarPairFC = compute3DFC(pass_scalarpair_preds, fail_scalarpair_preds);
+		
+		double [][][] elasticScalarPairSusp = compute3DSusp(pass_elastic_scalarpair_preds, fail_elastic_scalarpair_preds);
+		double [][][] elastic_ScalarPairFC = compute3DFC(pass_elastic_scalarpair_preds, fail_elastic_scalarpair_preds);
 		
 		computeCompoundScalarPairs(samples, variables);
 		double [][][][][] compoundSPSusp = compute5DSusp(pass_scalar_pair_cb_preds, fail_scalar_pair_cb_preds);
@@ -1898,6 +1908,38 @@ public class LevelTwoValidityCheck {
 		}
 	}
 	
+	private void computeElasticScalarPairStats(int pSamples, int pVariables){
+		scalarpair_statsset = new double [pVariables][pVariables][STATS_COLS];
+		for (int i=0; i<differenceset.length; i++){
+				for (int j=0; j<pVariables; j++){
+						for (int k=0; k<pVariables; k++){
+							scalarpair_statsset[j][k][MEAN] += differenceset[i][j][k];
+						}
+				}
+		}
+		
+		for (int j=0; j<pVariables; j++){
+				for (int k=0; k<pVariables; k++){
+					scalarpair_statsset[j][k][MEAN] = scalarpair_statsset[j][k][MEAN]/pVariables;
+				}
+	}
+	
+for (int i=0; i<differenceset.length; i++){	
+	for (int j=0; j<pVariables; j++){
+		for (int k=0; k<pVariables; k++){
+				scalarpair_statsset[j][k][STD_DEV] += ((differenceset[i][j][k] - scalarpair_statsset[j][k][MEAN]) * (differenceset[i][j][k] - scalarpair_statsset[j][k][MEAN]));
+			}
+		}
+	}
+		
+		for (int j=0; j<pVariables; j++){
+				for (int k=0; k<pVariables; k++){
+					scalarpair_statsset[j][k][STD_DEV] = scalarpair_statsset[j][k][STD_DEV]/pVariables;
+					scalarpair_statsset[j][k][STD_DEV] = Math.sqrt(scalarpair_statsset[j][k][STD_DEV]);
+				}
+	}
+}
+	
 	private void computeScalarPairPreds(int pSamples, int pVariables){
 		pass_scalarpair_preds = new double [pVariables][pVariables] [PRED_SIZE];
 		fail_scalarpair_preds = new double [pVariables][pVariables] [PRED_SIZE];
@@ -1926,9 +1968,39 @@ public class LevelTwoValidityCheck {
 			}
 		}	
 	}
+	
+	private void computeElasticScalarPairPreds(int pSamples, int pVariables){
+		pass_elastic_scalarpair_preds = new double [pVariables][pVariables] [PRED_SIZE];
+		fail_elastic_scalarpair_preds = new double [pVariables][pVariables] [PRED_SIZE];
+
+		for (int i=0; i<differenceset.length; i++){
+			// check if its a passing or failing trace
+			double failExtent = Double.parseDouble(datalabels[i][OUTCOME].trim());
+			double passExtent = 1.0 - failExtent;
+			for (int j=0; j<pVariables; j++){
+				for (int k=0; k<pVariables; k++){
+					if (inclusionMatrix[j][k]){
+					    double small_value = scalarpair_statsset[j][k][MEAN]-scalarpair_statsset[j][k][STD_DEV];
+					    double big_value = scalarpair_statsset[j][k][MEAN]+scalarpair_statsset[j][k][STD_DEV];
+						if (differenceset[i][j][k] < small_value){
+							fail_elastic_scalarpair_preds[j][k][SMALL]+=failExtent;
+							pass_elastic_scalarpair_preds[j][k][SMALL]+=passExtent;
+						}
+						else if (differenceset[i][j][k] > big_value){
+							fail_elastic_scalarpair_preds[j][k][LARGE]+=failExtent;
+							pass_elastic_scalarpair_preds[j][k][LARGE]+=passExtent;
+						}
+						else{
+							fail_elastic_scalarpair_preds[j][k][MED]+=failExtent;
+							pass_elastic_scalarpair_preds[j][k][MED]+=passExtent;
+						}
+					}
+				}
+			}
+		}	
+	}
 
 	private void computeDiffs(int pSamples, int pVariables){
-
 		differenceset = new double[pSamples][pVariables][pVariables];
 
 		for (int i=0; i<dataset.length; i++){
