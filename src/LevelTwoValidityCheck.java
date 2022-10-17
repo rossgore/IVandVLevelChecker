@@ -434,13 +434,13 @@ public class LevelTwoValidityCheck {
 				if (j > i){
 					double big_value = scalarpair_statsset[i][j][MEAN]+scalarpair_statsset[i][j][STD_DEV];
 					double small_value = scalarpair_statsset[i][j][MEAN]-scalarpair_statsset[i][j][STD_DEV];
-					System.out.print(varlabels[i]+" - "+varlabels[j]+"> "+String.format("%.4g%n", big_value)); 
+					System.out.print(varlabels[i]+" - "+varlabels[j]+ " > "+String.format("%.4g%n", big_value)); 
 					System.out.printf("%.2f", matrix[i][j][LARGE]);
 					System.out.println();
-					System.out.print(String.format("%.4g%n", big_value)+"< "+ varlabels[i]+" - "+varlabels[j]+"< "+String.format("%.4g%n", small_value));
+					System.out.print(String.format("%.4g%n", big_value)+" < "+ varlabels[i]+" - "+varlabels[j]+" < "+String.format("%.4g%n", small_value));
 					System.out.printf("%.2f", matrix[i][j][MED]);
 					System.out.println();
-					System.out.print(varlabels[i]+" - "+varlabels[j]+"< "+String.format("%.4g%n", small_value));
+					System.out.print(varlabels[i]+" - "+varlabels[j]+" < "+String.format("%.4g%n", small_value));
 					System.out.printf("%.2f", matrix[i][j][SMALL]);
 					System.out.println();
 				}
@@ -460,59 +460,59 @@ public class LevelTwoValidityCheck {
 				double jBig = statsset[j][MEAN] + statsset[j][STD_DEV];
 				if ((j > i) && pContains==true && pExcludes==false) {
 					containsList = parse(pContainsStr);
-					if (includes(containsList, (varlabels[i]+" < "+ iSmall + " AND "+varlabels[j]+" < "+jSmall+",")))
+					if (includes(containsList, (varlabels[i]+" < "+ iSmall + " & "+varlabels[j]+" < "+jSmall+",")))
 					{
-						totalPredsList.add(varlabels[i]+" < "+ iSmall + " AND "+varlabels[j]+" < "+jSmall+",");
+						totalPredsList.add(varlabels[i]+" < "+ iSmall + " & "+varlabels[j]+" < "+jSmall+",");
 						totalSuspList.add(matrix[i][j][0]);
 						totalFailingCasesList.add(fcMatrix[i][j][0]);
 					}
-					if (includes(containsList, (varlabels[i]+" < "+ iSmall + " AND "+jSmall+" < " +varlabels[j]+" < "+jSmall+",")))
+					if (includes(containsList, (varlabels[i]+" < "+ iSmall + " & "+jSmall+" < " +varlabels[j]+" < "+jBig+",")))
 					{
-						totalPredsList.add(varlabels[i]+" < "+ iSmall + " AND "+jSmall+" < " +varlabels[j]+" < "+jSmall+",");
+						totalPredsList.add(varlabels[i]+" < "+ iSmall + " & "+jSmall+" < " +varlabels[j]+" < "+jBig+",");
 						totalSuspList.add(matrix[i][j][1]);
 						totalFailingCasesList.add(fcMatrix[i][j][1]);
 
 					}
-					if (includes(containsList, (varlabels[i]+" < "+ iSmall + " AND "+varlabels[j]+" > "+jBig+",")))
+					if (includes(containsList, (varlabels[i]+" < "+ iSmall + " & "+varlabels[j]+" > "+jBig+",")))
 					{
-						totalPredsList.add(varlabels[i]+" < "+ iSmall + " AND "+varlabels[j]+" > "+jBig+",");
+						totalPredsList.add(varlabels[i]+" < "+ iSmall + " & "+varlabels[j]+" > "+jBig+",");
 						totalSuspList.add(matrix[i][j][2]);
 						totalFailingCasesList.add(fcMatrix[i][j][2]);
 					}
-					if (includes(containsList, (iSmall+" < "+varlabels[i]+" < "+ iBig + " AND "+varlabels[j]+" < "+jSmall+",")))
+					if (includes(containsList, (iSmall+" < "+varlabels[i]+" < "+ iBig + " & "+varlabels[j]+" < "+jSmall+",")))
 					{
-						totalPredsList.add(iSmall+" < "+varlabels[i]+" < "+ iBig + " AND "+varlabels[j]+" < "+jSmall+",");
+						totalPredsList.add(iSmall+" < "+varlabels[i]+" < "+ iBig + " & "+varlabels[j]+" < "+jSmall+",");
 						totalSuspList.add(matrix[i][j][3]);
 						totalFailingCasesList.add(fcMatrix[i][j][3]);
 					}
-					if (includes(containsList, (iSmall+" < "+varlabels[i]+" < "+ iBig + " AND "+jSmall+" < " +varlabels[j]+" < "+jBig+",")))
+					if (includes(containsList, (iSmall+" < "+varlabels[i]+" < "+ iBig + " & "+jSmall+" < " +varlabels[j]+" < "+jBig+",")))
 					{
-						totalPredsList.add(iSmall+" < "+varlabels[i]+" < "+ iBig + " AND "+jSmall+" < " +varlabels[j]+" < "+jBig+",");
+						totalPredsList.add(iSmall+" < "+varlabels[i]+" < "+ iBig + " & "+jSmall+" < " +varlabels[j]+" < "+jBig+",");
 						totalSuspList.add(matrix[i][j][4]);
 						totalFailingCasesList.add(fcMatrix[i][j][4]);
 					}
-					if (includes(containsList, (iSmall+" < "+varlabels[i]+" < "+ iBig + " AND "+varlabels[j]+" > "+jBig+",")))
+					if (includes(containsList, (iSmall+" < "+varlabels[i]+" < "+ iBig + " & "+varlabels[j]+" > "+jBig+",")))
 					{
-						totalPredsList.add(iSmall+" < "+varlabels[i]+" < "+ iBig + " AND "+varlabels[j]+" > "+jBig+",");
+						totalPredsList.add(iSmall+" < "+varlabels[i]+" < "+ iBig + " & "+varlabels[j]+" > "+jBig+",");
 						totalSuspList.add(matrix[i][j][5]);
 						totalFailingCasesList.add(fcMatrix[i][j][5]);
 					}
-					if (includes(containsList, (varlabels[i]+" > "+ iBig + " AND "+varlabels[j]+" < "+jSmall+",")))
+					if (includes(containsList, (varlabels[i]+" > "+ iBig + " & "+varlabels[j]+" < "+jSmall+",")))
 					{
-						totalPredsList.add(varlabels[i]+" > "+ iBig + " AND "+varlabels[j]+" < "+jSmall+",");
+						totalPredsList.add(varlabels[i]+" > "+ iBig + " & "+varlabels[j]+" < "+jSmall+",");
 						totalSuspList.add(matrix[i][j][6]);
 						totalFailingCasesList.add(fcMatrix[i][j][6]);
 					}
 
-					if (includes(containsList, (varlabels[i]+" > "+ iBig + " AND "+jSmall+" < " +varlabels[j]+" < "+jSmall+",")))
+					if (includes(containsList, (varlabels[i]+" > "+ iBig + " & "+jSmall+" < " +varlabels[j]+" < "+jBig+",")))
 					{
-						totalPredsList.add(varlabels[i]+" > "+ iBig + " AND "+jSmall+" < " +varlabels[j]+" < "+jSmall+",");
+						totalPredsList.add(varlabels[i]+" > "+ iBig + " & "+jSmall+" < " +varlabels[j]+" < "+jBig+",");
 						totalSuspList.add(matrix[i][j][7]);
 						totalFailingCasesList.add(fcMatrix[i][j][7]);
 					}
-					if (includes(containsList, (varlabels[i]+" > "+ iBig + " AND "+varlabels[j]+" > "+jBig+",")))
+					if (includes(containsList, (varlabels[i]+" > "+ iBig + " & "+varlabels[j]+" > "+jBig+",")))
 					{
-						totalPredsList.add(varlabels[i]+" > "+ iBig + " AND "+varlabels[j]+" > "+jBig+",");
+						totalPredsList.add(varlabels[i]+" > "+ iBig + " & "+varlabels[j]+" > "+jBig+",");
 						totalSuspList.add(matrix[i][j][8]);
 						totalFailingCasesList.add(fcMatrix[i][j][8]);
 					}
@@ -522,79 +522,79 @@ public class LevelTwoValidityCheck {
 					containsList = parse(pContainsStr);
 					excludesList = parse(pExcludesStr);	
 					if ((j > i)){
-						if (includes(containsList, (varlabels[i]+" < "+ iSmall + " AND "+varlabels[j]+" < "+jSmall+",")) &&
-								includes(excludesList, (varlabels[i]+" < "+ iSmall + " AND "+varlabels[j]+" < "+jSmall+",")) == false)
+						if (includes(containsList, (varlabels[i]+" < "+ iSmall + " & "+varlabels[j]+" < "+jSmall+",")) &&
+								includes(excludesList, (varlabels[i]+" < "+ iSmall + " & "+varlabels[j]+" < "+jSmall+",")) == false)
 						{
-							totalPredsList.add(varlabels[i]+" < "+ iSmall + " AND "+varlabels[j]+" < "+jSmall+",");
+							totalPredsList.add(varlabels[i]+" < "+ iSmall + " & "+varlabels[j]+" < "+jSmall+",");
 							totalSuspList.add(matrix[i][j][0]);
 							totalFailingCasesList.add(fcMatrix[i][j][0]);
 						}
 
-						if (includes(containsList, (varlabels[i]+" < "+ iSmall + " AND "+jSmall+" < " +varlabels[j]+" < "+jSmall+",")) &&
-								includes(excludesList, (varlabels[i]+" < "+ iSmall + " AND "+jSmall+" < " +varlabels[j]+" < "+jSmall+","))== false)
+						if (includes(containsList, (varlabels[i]+" < "+ iSmall + " & "+jSmall+" < " +varlabels[j]+" < "+jBig+",")) &&
+								includes(excludesList, (varlabels[i]+" < "+ iSmall + " & "+jSmall+" < " +varlabels[j]+" < "+jBig+","))== false)
 						{
-							totalPredsList.add(varlabels[i]+" < "+ iSmall + " AND "+jSmall+" < " +varlabels[j]+" < "+jSmall+",");
+							totalPredsList.add(varlabels[i]+" < "+ iSmall + " & "+jSmall+" < " +varlabels[j]+" < "+jBig+",");
 							totalSuspList.add(matrix[i][j][1]);
 							totalFailingCasesList.add(fcMatrix[i][j][1]);
 						}
 
-						if (includes(containsList, (varlabels[i]+" < "+ iSmall + " AND "+varlabels[j]+" > "+jBig+",")) &&
-								includes(excludesList, (varlabels[i]+" < "+ iSmall + " AND "+varlabels[j]+" > "+jBig+","))== false)
+						if (includes(containsList, (varlabels[i]+" < "+ iSmall + " & "+varlabels[j]+" > "+jBig+",")) &&
+								includes(excludesList, (varlabels[i]+" < "+ iSmall + " & "+varlabels[j]+" > "+jBig+","))== false)
 						{
-							totalPredsList.add(varlabels[i]+" < "+ iSmall + " AND "+varlabels[j]+" > "+jBig+",");
+							totalPredsList.add(varlabels[i]+" < "+ iSmall + " & "+varlabels[j]+" > "+jBig+",");
 							totalSuspList.add(matrix[i][j][2]);
 							totalFailingCasesList.add(fcMatrix[i][j][2]);
 						}
 
-						if (includes(containsList, (iSmall+" < "+varlabels[i]+" < "+ iBig + " AND "+varlabels[j]+" < "+jSmall+",")) &&
-								includes(excludesList, (iSmall+" < "+varlabels[i]+" < "+ iBig + " AND "+varlabels[j]+" < "+jSmall+","))== false)
+						if (includes(containsList, (iSmall+" < "+varlabels[i]+" < "+ iBig + " & "+varlabels[j]+" < "+jSmall+",")) &&
+								includes(excludesList, (iSmall+" < "+varlabels[i]+" < "+ iBig + " & "+varlabels[j]+" < "+jSmall+","))== false)
 						{
-							totalPredsList.add(iSmall+" < "+varlabels[i]+" < "+ iBig + " AND "+varlabels[j]+" < "+jSmall+",");
+							totalPredsList.add(iSmall+" < "+varlabels[i]+" < "+ iBig + " & "+varlabels[j]+" < "+jSmall+",");
 							totalSuspList.add(matrix[i][j][3]);
 							totalFailingCasesList.add(fcMatrix[i][j][3]);
 						}
 
 
-						if (includes(containsList, (iSmall+" < "+varlabels[i]+" < "+ iBig + " AND "+jSmall+" < " +varlabels[j]+" < "+jBig+",")) &&
-								includes(excludesList, (iSmall+" < "+varlabels[i]+" < "+ iBig + " AND "+jSmall+" < " +varlabels[j]+" < "+jBig+","))== false)
+						if (includes(containsList, (iSmall+" < "+varlabels[i]+" < "+ iBig + " & "+jSmall+" < " +varlabels[j]+" < "+jBig+",")) &&
+								includes(excludesList, (iSmall+" < "+varlabels[i]+" < "+ iBig + " & "+jSmall+" < " +varlabels[j]+" < "+jBig+","))== false)
 						{
-							totalPredsList.add(iSmall+" < "+varlabels[i]+" < "+ iBig + " AND "+jSmall+" < " +varlabels[j]+" < "+jBig+",");
+							totalPredsList.add(iSmall+" < "+varlabels[i]+" < "+ iBig + " & "+jSmall+" < " +varlabels[j]+" < "+jBig+",");
 							totalSuspList.add(matrix[i][j][4]);
 							totalFailingCasesList.add(fcMatrix[i][j][4]);
 						}
 
 
-						if (includes(containsList, (iSmall+" < "+varlabels[i]+" < "+ iBig + " AND "+varlabels[j]+" > "+jBig+",")) &&
-								includes(excludesList, (iSmall+" < "+varlabels[i]+" < "+ iBig + " AND "+varlabels[j]+" > "+jBig+","))== false)
+						if (includes(containsList, (iSmall+" < "+varlabels[i]+" < "+ iBig + " & "+varlabels[j]+" > "+jBig+",")) &&
+								includes(excludesList, (iSmall+" < "+varlabels[i]+" < "+ iBig + " & "+varlabels[j]+" > "+jBig+","))== false)
 						{
-							totalPredsList.add(iSmall+" < "+varlabels[i]+" < "+ iBig + " AND "+varlabels[j]+" > "+jBig+",");
+							totalPredsList.add(iSmall+" < "+varlabels[i]+" < "+ iBig + " & "+varlabels[j]+" > "+jBig+",");
 							totalSuspList.add(matrix[i][j][5]);
 							totalFailingCasesList.add(fcMatrix[i][j][5]);
 						}
 
 
-						if (includes(containsList, (varlabels[i]+" > "+ iBig + " AND "+varlabels[j]+" < "+jSmall+",")) &&
-								includes(excludesList, (varlabels[i]+" > "+ iBig + " AND "+varlabels[j]+" < "+jSmall+","))== false)
+						if (includes(containsList, (varlabels[i]+" > "+ iBig + " & "+varlabels[j]+" < "+jSmall+",")) &&
+								includes(excludesList, (varlabels[i]+" > "+ iBig + " & "+varlabels[j]+" < "+jSmall+","))== false)
 						{
-							totalPredsList.add(varlabels[i]+" > "+ iBig + " AND "+varlabels[j]+" < "+jSmall+",");
+							totalPredsList.add(varlabels[i]+" > "+ iBig + " & "+varlabels[j]+" < "+jSmall+",");
 							totalSuspList.add(matrix[i][j][6]);
 							totalFailingCasesList.add(fcMatrix[i][j][6]);
 						}
 
 
-						if (includes(containsList, (varlabels[i]+" > "+ iBig + " AND "+jSmall+" < " +varlabels[j]+" < "+jSmall+",")) &&
-								includes(excludesList, (varlabels[i]+" > "+ iBig + " AND "+jSmall+" < " +varlabels[j]+" < "+jSmall+","))== false)
+						if (includes(containsList, (varlabels[i]+" > "+ iBig + " & "+jSmall+" < " +varlabels[j]+" < "+jBig+",")) &&
+								includes(excludesList, (varlabels[i]+" > "+ iBig + " & "+jSmall+" < " +varlabels[j]+" < "+jBig+","))== false)
 						{
-							totalPredsList.add(varlabels[i]+" > "+ iBig + " AND "+jSmall+" < " +varlabels[j]+" < "+jSmall+",");
+							totalPredsList.add(varlabels[i]+" > "+ iBig + " & "+jSmall+" < " +varlabels[j]+" < "+jBig+",");
 							totalSuspList.add(matrix[i][j][7]);
 							totalFailingCasesList.add(fcMatrix[i][j][7]);
 						}
 
 
-						if (includes(containsList, (varlabels[i]+" > "+ iBig + " AND "+varlabels[j]+" > "+jBig+",")) &&
-								includes(excludesList, (varlabels[i]+" > "+ iBig + " AND "+varlabels[j]+" > "+jBig+","))== false)
+						if (includes(containsList, (varlabels[i]+" > "+ iBig + " & "+varlabels[j]+" > "+jBig+",")) &&
+								includes(excludesList, (varlabels[i]+" > "+ iBig + " & "+varlabels[j]+" > "+jBig+","))== false)
 						{
-							totalPredsList.add(varlabels[i]+" > "+ iBig + " AND "+varlabels[j]+" > "+jBig+",");
+							totalPredsList.add(varlabels[i]+" > "+ iBig + " & "+varlabels[j]+" > "+jBig+",");
 							totalSuspList.add(matrix[i][j][8]);
 							totalFailingCasesList.add(fcMatrix[i][j][8]);
 						}
@@ -602,59 +602,59 @@ public class LevelTwoValidityCheck {
 				}
 				if ((j > i) && pExcludes==true && pContains == false){
 					excludesList = parse(pExcludesStr);
-					if (includes(excludesList, (varlabels[i]+" < "+ iSmall + " AND "+varlabels[j]+" < "+jSmall+",")) == false)
+					if (includes(excludesList, (varlabels[i]+" < "+ iSmall + " & "+varlabels[j]+" < "+jSmall+",")) == false)
 					{
-						totalPredsList.add(varlabels[i]+" < "+ iSmall + " AND "+varlabels[j]+" < "+jSmall+",");
+						totalPredsList.add(varlabels[i]+" < "+ iSmall + " & "+varlabels[j]+" < "+jSmall+",");
 						totalSuspList.add(matrix[i][j][0]);
 						totalFailingCasesList.add(fcMatrix[i][j][0]);
 					}
-					if (includes(excludesList, (varlabels[i]+" < "+ iSmall + " AND "+jSmall+" < " +varlabels[j]+" < "+jSmall+","))== false)
+					if (includes(excludesList, (varlabels[i]+" < "+ iSmall + " & "+jSmall+" < " +varlabels[j]+" < "+jBig+","))== false)
 					{
-						totalPredsList.add(varlabels[i]+" < "+ iSmall + " AND "+jSmall+" < " +varlabels[j]+" < "+jSmall+",");
+						totalPredsList.add(varlabels[i]+" < "+ iSmall + " & "+jSmall+" < " +varlabels[j]+" < "+jBig+",");
 						totalSuspList.add(matrix[i][j][1]);
 						totalFailingCasesList.add(fcMatrix[i][j][1]);
 
 					}
-					if (includes(excludesList, (varlabels[i]+" < "+ iSmall + " AND "+varlabels[j]+" > "+jBig+","))== false)
+					if (includes(excludesList, (varlabels[i]+" < "+ iSmall + " & "+varlabels[j]+" > "+jBig+","))== false)
 					{
-						totalPredsList.add(varlabels[i]+" < "+ iSmall + " AND "+varlabels[j]+" > "+jBig+",");
+						totalPredsList.add(varlabels[i]+" < "+ iSmall + " & "+varlabels[j]+" > "+jBig+",");
 						totalSuspList.add(matrix[i][j][2]);
 						totalFailingCasesList.add(fcMatrix[i][j][2]);
 					}
-					if (includes(excludesList, (iSmall+" < "+varlabels[i]+" < "+ iBig + " AND "+varlabels[j]+" < "+jSmall+","))== false)
+					if (includes(excludesList, (iSmall+" < "+varlabels[i]+" < "+ iBig + " & "+varlabels[j]+" < "+jSmall+","))== false)
 					{
-						totalPredsList.add(iSmall+" < "+varlabels[i]+" < "+ iBig + " AND "+varlabels[j]+" < "+jSmall+",");
+						totalPredsList.add(iSmall+" < "+varlabels[i]+" < "+ iBig + " & "+varlabels[j]+" < "+jSmall+",");
 						totalSuspList.add(matrix[i][j][3]);
 						totalFailingCasesList.add(fcMatrix[i][j][3]);
 					}
-					if (includes(excludesList, (iSmall+" < "+varlabels[i]+" < "+ iBig + " AND "+jSmall+" < " +varlabels[j]+" < "+jBig+","))== false)
+					if (includes(excludesList, (iSmall+" < "+varlabels[i]+" < "+ iBig + " & "+jSmall+" < " +varlabels[j]+" < "+jBig+","))== false)
 					{
-						totalPredsList.add(iSmall+" < "+varlabels[i]+" < "+ iBig + " AND "+jSmall+" < " +varlabels[j]+" < "+jBig+",");
+						totalPredsList.add(iSmall+" < "+varlabels[i]+" < "+ iBig + " & "+jSmall+" < " +varlabels[j]+" < "+jBig+",");
 						totalSuspList.add(matrix[i][j][4]);
 						totalFailingCasesList.add(fcMatrix[i][j][4]);
 					}
-					if (includes(excludesList, (iSmall+" < "+varlabels[i]+" < "+ iBig + " AND "+varlabels[j]+" > "+jBig+","))== false)
+					if (includes(excludesList, (iSmall+" < "+varlabels[i]+" < "+ iBig + " & "+varlabels[j]+" > "+jBig+","))== false)
 					{
-						totalPredsList.add(iSmall+" < "+varlabels[i]+" < "+ iBig + " AND "+varlabels[j]+" > "+jBig+",");
+						totalPredsList.add(iSmall+" < "+varlabels[i]+" < "+ iBig + " & "+varlabels[j]+" > "+jBig+",");
 						totalSuspList.add(matrix[i][j][5]);
 						totalFailingCasesList.add(fcMatrix[i][j][5]);
 					}
-					if (includes(excludesList, (varlabels[i]+" > "+ iBig + " AND "+varlabels[j]+" < "+jSmall+","))== false)
+					if (includes(excludesList, (varlabels[i]+" > "+ iBig + " & "+varlabels[j]+" < "+jSmall+","))== false)
 					{
-						totalPredsList.add(varlabels[i]+" > "+ iBig + " AND "+varlabels[j]+" < "+jSmall+",");
+						totalPredsList.add(varlabels[i]+" > "+ iBig + " & "+varlabels[j]+" < "+jSmall+",");
 						totalSuspList.add(matrix[i][j][6]);
 						totalFailingCasesList.add(fcMatrix[i][j][6]);
 					}
 
-					if (includes(excludesList, (varlabels[i]+" > "+ iBig + " AND "+jSmall+" < " +varlabels[j]+" < "+jSmall+","))== false)
+					if (includes(excludesList, (varlabels[i]+" > "+ iBig + " & "+jSmall+" < " +varlabels[j]+" < "+jBig+","))== false)
 					{
-						totalPredsList.add(varlabels[i]+" > "+ iBig + " AND "+jSmall+" < " +varlabels[j]+" < "+jSmall+",");
+						totalPredsList.add(varlabels[i]+" > "+ iBig + " & "+jSmall+" < " +varlabels[j]+" < "+jBig+",");
 						totalSuspList.add(matrix[i][j][7]);
 						totalFailingCasesList.add(fcMatrix[i][j][7]);
 					}
-					if (includes(excludesList, (varlabels[i]+" > "+ iBig + " AND "+varlabels[j]+" > "+jBig+","))== false)
+					if (includes(excludesList, (varlabels[i]+" > "+ iBig + " & "+varlabels[j]+" > "+jBig+","))== false)
 					{
-						totalPredsList.add(varlabels[i]+" > "+ iBig + " AND "+varlabels[j]+" > "+jBig+",");
+						totalPredsList.add(varlabels[i]+" > "+ iBig + " & "+varlabels[j]+" > "+jBig+",");
 						totalSuspList.add(matrix[i][j][8]);
 						totalFailingCasesList.add(fcMatrix[i][j][8]);
 					}
@@ -664,28 +664,28 @@ public class LevelTwoValidityCheck {
 
 						if (matrix[i][j][0] >= pSuspThreshold)
 						{
-							totalPredsList.add(varlabels[i]+" < "+ iSmall + " AND "+varlabels[j]+" < "+jSmall+",");
+							totalPredsList.add(varlabels[i]+" < "+ iSmall + " & "+varlabels[j]+" < "+jSmall+",");
 							totalSuspList.add(matrix[i][j][0]);
 							totalFailingCasesList.add(fcMatrix[i][j][0]);
 						}
 
 						if (matrix[i][j][1] >= pSuspThreshold)
 						{
-							totalPredsList.add(varlabels[i]+" < "+ iSmall + " AND "+jSmall+" < " +varlabels[j]+" < "+jSmall+",");
+							totalPredsList.add(varlabels[i]+" < "+ iSmall + " & "+jSmall+" < " +varlabels[j]+" < "+jBig+",");
 							totalSuspList.add(matrix[i][j][1]);
 							totalFailingCasesList.add(fcMatrix[i][j][1]);
 						}
 
 						if (matrix[i][j][2] >= pSuspThreshold)
 						{
-							totalPredsList.add(varlabels[i]+" < "+ iSmall + " AND "+varlabels[j]+" > "+jBig+",");
+							totalPredsList.add(varlabels[i]+" < "+ iSmall + " & "+varlabels[j]+" > "+jBig+",");
 							totalSuspList.add(matrix[i][j][2]);
 							totalFailingCasesList.add(fcMatrix[i][j][2]);
 						}
 
 						if (matrix[i][j][3] >= pSuspThreshold)
 						{
-							totalPredsList.add(iSmall+" < "+varlabels[i]+" < "+ iBig + " AND "+varlabels[j]+" < "+jSmall+",");
+							totalPredsList.add(iSmall+" < "+varlabels[i]+" < "+ iBig + " & "+varlabels[j]+" < "+jSmall+",");
 							totalSuspList.add(matrix[i][j][3]);
 							totalFailingCasesList.add(fcMatrix[i][j][3]);
 						}
@@ -693,7 +693,7 @@ public class LevelTwoValidityCheck {
 
 						if (matrix[i][j][4] >= pSuspThreshold)
 						{
-							totalPredsList.add(iSmall+" < "+varlabels[i]+" < "+ iBig + " AND "+jSmall+" < " +varlabels[j]+" < "+jBig+",");
+							totalPredsList.add(iSmall+" < "+varlabels[i]+" < "+ iBig + " & "+jSmall+" < " +varlabels[j]+" < "+jBig+",");
 							totalSuspList.add(matrix[i][j][4]);
 							totalFailingCasesList.add(fcMatrix[i][j][4]);
 						}
@@ -701,7 +701,8 @@ public class LevelTwoValidityCheck {
 
 						if (matrix[i][j][5] >= pSuspThreshold)
 						{
-							totalPredsList.add(iSmall+" < "+varlabels[i]+" < "+ iBig + " AND "+varlabels[j]+" > "+jBig+",");
+							// think it is this one
+							totalPredsList.add(iSmall+" < "+varlabels[i]+" < "+ iBig + " & "+varlabels[j]+" > "+jBig+",");
 							totalSuspList.add(matrix[i][j][5]);
 							totalFailingCasesList.add(fcMatrix[i][j][5]);
 						}
@@ -709,7 +710,7 @@ public class LevelTwoValidityCheck {
 
 						if (matrix[i][j][6] >= pSuspThreshold)
 						{
-							totalPredsList.add(varlabels[i]+" > "+ iBig + " AND "+varlabels[j]+" < "+jSmall+",");
+							totalPredsList.add(varlabels[i]+" > "+ iBig + " & "+varlabels[j]+" < "+jSmall+",");
 							totalSuspList.add(matrix[i][j][6]);
 							totalFailingCasesList.add(fcMatrix[i][j][6]);
 						}
@@ -717,7 +718,7 @@ public class LevelTwoValidityCheck {
 
 						if (matrix[i][j][7] >= pSuspThreshold)
 						{
-							totalPredsList.add(varlabels[i]+" > "+ iBig + " AND "+jSmall+" < " +varlabels[j]+" < "+jSmall+",");
+							totalPredsList.add(varlabels[i]+" > "+ iBig + " & "+jSmall+" < " +varlabels[j]+" < "+jBig+",");
 							totalSuspList.add(matrix[i][j][7]);
 							totalFailingCasesList.add(fcMatrix[i][j][7]);
 						}
@@ -725,7 +726,7 @@ public class LevelTwoValidityCheck {
 
 						if (matrix[i][j][8] >= pSuspThreshold)
 						{
-							totalPredsList.add(varlabels[i]+" > "+ iBig + " AND "+varlabels[j]+" > "+jBig+",");
+							totalPredsList.add(varlabels[i]+" > "+ iBig + " & "+varlabels[j]+" > "+jBig+",");
 							totalSuspList.add(matrix[i][j][8]);
 							totalFailingCasesList.add(fcMatrix[i][j][8]);
 						}
@@ -743,114 +744,114 @@ public class LevelTwoValidityCheck {
 			for (int j=0; j<matrix[0].length; j++){
 				if ((j > i) && pContains==true && pExcludes==false) {
 					containsList = parse(pContainsStr);
-					if (includes(containsList, (varlabels[i]+" < 0 AND "+varlabels[j]+" < 0,")))
+					if (includes(containsList, (varlabels[i]+" < 0 & "+varlabels[j]+" < 0,")))
 					{
-						totalPredsList.add(varlabels[i]+" < 0 AND "+varlabels[j]+" < 0,");
+						totalPredsList.add(varlabels[i]+" < 0 & "+varlabels[j]+" < 0,");
 						totalSuspList.add(matrix[i][j][0]);
 						totalFailingCasesList.add(fcMatrix[i][j][0]);
 					}
-					if (includes(containsList, (varlabels[i]+" < 0 AND "+varlabels[j]+" == 0,")))
+					if (includes(containsList, (varlabels[i]+" < 0 & "+varlabels[j]+" == 0,")))
 					{
-						totalPredsList.add(varlabels[i]+" < 0 AND "+varlabels[j]+" == 0,");
+						totalPredsList.add(varlabels[i]+" < 0 & "+varlabels[j]+" == 0,");
 						totalSuspList.add(matrix[i][j][1]);
 						totalFailingCasesList.add(fcMatrix[i][j][1]);
 					}
-					if (includes(containsList, (varlabels[i]+" < 0 AND "+varlabels[j]+" > 0,")))
+					if (includes(containsList, (varlabels[i]+" < 0 & "+varlabels[j]+" > 0,")))
 					{
-						totalPredsList.add(varlabels[i]+" == 0 AND "+varlabels[j]+" > 0,");
+						totalPredsList.add(varlabels[i]+" == 0 & "+varlabels[j]+" > 0,");
 						totalSuspList.add(matrix[i][j][2]);
 						totalFailingCasesList.add(fcMatrix[i][j][2]);
 					}
-					if (includes(containsList, (varlabels[i]+" == 0 AND "+varlabels[j]+" < 0,")))
+					if (includes(containsList, (varlabels[i]+" == 0 & "+varlabels[j]+" < 0,")))
 					{
-						totalPredsList.add(varlabels[i]+" == 0 AND "+varlabels[j]+" < 0,");
+						totalPredsList.add(varlabels[i]+" == 0 & "+varlabels[j]+" < 0,");
 						totalSuspList.add(matrix[i][j][3]);
 						totalFailingCasesList.add(fcMatrix[i][j][3]);
 					}
-					if (includes(containsList, (varlabels[i]+" == 0 AND "+varlabels[j]+" == 0,")))
+					if (includes(containsList, (varlabels[i]+" == 0 & "+varlabels[j]+" == 0,")))
 					{
-						totalPredsList.add(varlabels[i]+" == 0 AND "+varlabels[j]+" == 0,");
+						totalPredsList.add(varlabels[i]+" == 0 & "+varlabels[j]+" == 0,");
 						totalSuspList.add(matrix[i][j][4]);
 						totalFailingCasesList.add(fcMatrix[i][j][4]);
 					}
-					if (includes(containsList, (varlabels[i]+" == 0 AND "+varlabels[j]+" > 0,")))
+					if (includes(containsList, (varlabels[i]+" == 0 & "+varlabels[j]+" > 0,")))
 					{
-						totalPredsList.add(varlabels[i]+" == 0 AND "+varlabels[j]+" > 0,");
+						totalPredsList.add(varlabels[i]+" == 0 & "+varlabels[j]+" > 0,");
 						totalSuspList.add(matrix[i][j][5]);
 						totalFailingCasesList.add(fcMatrix[i][j][5]);
 					}
-					if (includes(containsList, (varlabels[i]+" > 0 AND "+varlabels[j]+" < 0,")))
+					if (includes(containsList, (varlabels[i]+" > 0 & "+varlabels[j]+" < 0,")))
 					{
-						totalPredsList.add(varlabels[i]+" > 0 AND "+varlabels[j]+" < 0,");
+						totalPredsList.add(varlabels[i]+" > 0 & "+varlabels[j]+" < 0,");
 						totalSuspList.add(matrix[i][j][6]);
 						totalFailingCasesList.add(fcMatrix[i][j][6]);
 					}
-					if (includes(containsList, (varlabels[i]+" > 0 AND "+varlabels[j]+" == 0,")))
+					if (includes(containsList, (varlabels[i]+" > 0 & "+varlabels[j]+" == 0,")))
 					{
-						totalPredsList.add(varlabels[i]+" > 0 AND "+varlabels[j]+" == 0,");
+						totalPredsList.add(varlabels[i]+" > 0 & "+varlabels[j]+" == 0,");
 						totalSuspList.add(matrix[i][j][7]);
 						totalFailingCasesList.add(fcMatrix[i][j][7]);
 					}
-					if (includes(containsList, (varlabels[i]+" > 0 AND "+varlabels[j]+" > 0,")))
+					if (includes(containsList, (varlabels[i]+" > 0 & "+varlabels[j]+" > 0,")))
 					{
-						totalPredsList.add(varlabels[i]+" > 0 AND "+varlabels[j]+" > 0,");
+						totalPredsList.add(varlabels[i]+" > 0 & "+varlabels[j]+" > 0,");
 						totalSuspList.add(matrix[i][j][8]);
 						totalFailingCasesList.add(fcMatrix[i][j][8]);
 					}
 				}
 				if ((j > i) && pExcludes==true && pContains==false){
 					excludesList = parse(pExcludesStr);
-					if (includes(excludesList, (varlabels[i]+" < 0 AND "+varlabels[j]+" < 0,"))==false)
+					if (includes(excludesList, (varlabels[i]+" < 0 & "+varlabels[j]+" < 0,"))==false)
 					{
-						totalPredsList.add(varlabels[i]+" < 0 AND "+varlabels[j]+" < 0,");
+						totalPredsList.add(varlabels[i]+" < 0 & "+varlabels[j]+" < 0,");
 						totalSuspList.add(matrix[i][j][0]);
 						totalFailingCasesList.add(fcMatrix[i][j][0]);
 					}
-					if (includes(excludesList, (varlabels[i]+" < 0 AND "+varlabels[j]+" == 0,"))==false)
+					if (includes(excludesList, (varlabels[i]+" < 0 & "+varlabels[j]+" == 0,"))==false)
 					{
-						totalPredsList.add(varlabels[i]+" < 0 AND "+varlabels[j]+" == 0,");
+						totalPredsList.add(varlabels[i]+" < 0 & "+varlabels[j]+" == 0,");
 						totalSuspList.add(matrix[i][j][1]);
 						totalFailingCasesList.add(fcMatrix[i][j][1]);
 					}
-					if (includes(excludesList, (varlabels[i]+" < 0 AND "+varlabels[j]+" > 0,"))==false)
+					if (includes(excludesList, (varlabels[i]+" < 0 & "+varlabels[j]+" > 0,"))==false)
 					{
-						totalPredsList.add(varlabels[i]+" == 0 AND "+varlabels[j]+" > 0,");
+						totalPredsList.add(varlabels[i]+" == 0 & "+varlabels[j]+" > 0,");
 						totalSuspList.add(matrix[i][j][2]);
 						totalFailingCasesList.add(fcMatrix[i][j][2]);
 					}
-					if (includes(excludesList, (varlabels[i]+" == 0 AND "+varlabels[j]+" < 0,"))==false)
+					if (includes(excludesList, (varlabels[i]+" == 0 & "+varlabels[j]+" < 0,"))==false)
 					{
-						totalPredsList.add(varlabels[i]+" == 0 AND "+varlabels[j]+" < 0,");
+						totalPredsList.add(varlabels[i]+" == 0 & "+varlabels[j]+" < 0,");
 						totalSuspList.add(matrix[i][j][3]);
 						totalFailingCasesList.add(fcMatrix[i][j][3]);
 					}
-					if (includes(excludesList, (varlabels[i]+" == 0 AND "+varlabels[j]+" == 0,"))==false)
+					if (includes(excludesList, (varlabels[i]+" == 0 & "+varlabels[j]+" == 0,"))==false)
 					{
-						totalPredsList.add(varlabels[i]+" == 0 AND "+varlabels[j]+" == 0,");
+						totalPredsList.add(varlabels[i]+" == 0 & "+varlabels[j]+" == 0,");
 						totalSuspList.add(matrix[i][j][4]);
 						totalFailingCasesList.add(fcMatrix[i][j][4]);
 					}
-					if (includes(excludesList, (varlabels[i]+" == 0 AND "+varlabels[j]+" > 0,"))==false)
+					if (includes(excludesList, (varlabels[i]+" == 0 & "+varlabels[j]+" > 0,"))==false)
 					{
-						totalPredsList.add(varlabels[i]+" == 0 AND "+varlabels[j]+" > 0,");
+						totalPredsList.add(varlabels[i]+" == 0 & "+varlabels[j]+" > 0,");
 						totalSuspList.add(matrix[i][j][5]);
 						totalFailingCasesList.add(fcMatrix[i][j][5]);
 					}
-					if (includes(excludesList, (varlabels[i]+" > 0 AND "+varlabels[j]+" < 0,"))==false)
+					if (includes(excludesList, (varlabels[i]+" > 0 & "+varlabels[j]+" < 0,"))==false)
 					{
-						totalPredsList.add(varlabels[i]+" > 0 AND "+varlabels[j]+" < 0,");
+						totalPredsList.add(varlabels[i]+" > 0 & "+varlabels[j]+" < 0,");
 						totalSuspList.add(matrix[i][j][6]);
 						totalFailingCasesList.add(fcMatrix[i][j][6]);
 					}
-					if (includes(excludesList, (varlabels[i]+" > 0 AND "+varlabels[j]+" == 0,"))==false)
+					if (includes(excludesList, (varlabels[i]+" > 0 & "+varlabels[j]+" == 0,"))==false)
 					{
-						totalPredsList.add(varlabels[i]+" > 0 AND "+varlabels[j]+" == 0,");
+						totalPredsList.add(varlabels[i]+" > 0 & "+varlabels[j]+" == 0,");
 						totalSuspList.add(matrix[i][j][7]);
 						totalFailingCasesList.add(fcMatrix[i][j][7]);
 					}
-					if (includes(excludesList, (varlabels[i]+" > 0 AND "+varlabels[j]+" > 0,"))==false)
+					if (includes(excludesList, (varlabels[i]+" > 0 & "+varlabels[j]+" > 0,"))==false)
 					{
-						totalPredsList.add(varlabels[i]+" > 0 AND "+varlabels[j]+" > 0,");
+						totalPredsList.add(varlabels[i]+" > 0 & "+varlabels[j]+" > 0,");
 						totalSuspList.add(matrix[i][j][8]);
 						totalFailingCasesList.add(fcMatrix[i][j][8]);
 					}
@@ -860,61 +861,61 @@ public class LevelTwoValidityCheck {
 					if ((j > i)){
 
 						if (matrix[i][j][0] >= pSuspThreshold){
-							totalPredsList.add(varlabels[i]+" < 0 AND "+varlabels[j]+" < 0,");
+							totalPredsList.add(varlabels[i]+" < 0 & "+varlabels[j]+" < 0,");
 							totalSuspList.add(matrix[i][j][0]);
 							totalFailingCasesList.add(fcMatrix[i][j][0]);
 						}
 
 						if (matrix[i][j][1] >= pSuspThreshold){
-							totalPredsList.add(varlabels[i]+" < 0 AND "+varlabels[j]+" == 0,");
+							totalPredsList.add(varlabels[i]+" < 0 & "+varlabels[j]+" == 0,");
 							totalSuspList.add(matrix[i][j][1]);
 							totalFailingCasesList.add(fcMatrix[i][j][1]);
 						}
 
 						if (matrix[i][j][2] >= pSuspThreshold){
-							totalPredsList.add(varlabels[i]+" < 0 AND "+varlabels[j]+" > 0,");
+							totalPredsList.add(varlabels[i]+" < 0 & "+varlabels[j]+" > 0,");
 							totalSuspList.add(matrix[i][j][2]);
 							totalFailingCasesList.add(fcMatrix[i][j][2]);
 						}
 
 
 						if (matrix[i][j][3] >= pSuspThreshold){
-							totalPredsList.add(varlabels[i]+" == 0 AND "+varlabels[j]+" < 0,");
+							totalPredsList.add(varlabels[i]+" == 0 & "+varlabels[j]+" < 0,");
 							totalSuspList.add(matrix[i][j][3]);
 							totalFailingCasesList.add(fcMatrix[i][j][3]);
 						}
 
 
 						if (matrix[i][j][4] >= pSuspThreshold){
-							totalPredsList.add(varlabels[i]+" == 0 AND "+varlabels[j]+" == 0,");
+							totalPredsList.add(varlabels[i]+" == 0 & "+varlabels[j]+" == 0,");
 							totalSuspList.add(matrix[i][j][4]);
 							totalFailingCasesList.add(fcMatrix[i][j][4]);
 						}
 
 
 						if (matrix[i][j][5] >= pSuspThreshold){
-							totalPredsList.add(varlabels[i]+" == 0 AND "+varlabels[j]+" > 0,");
+							totalPredsList.add(varlabels[i]+" == 0 & "+varlabels[j]+" > 0,");
 							totalSuspList.add(matrix[i][j][5]);
 							totalFailingCasesList.add(fcMatrix[i][j][5]);
 						}
 
 
 						if (matrix[i][j][6] >= pSuspThreshold){
-							totalPredsList.add(varlabels[i]+" > 0 AND "+varlabels[j]+" < 0,");
+							totalPredsList.add(varlabels[i]+" > 0 & "+varlabels[j]+" < 0,");
 							totalSuspList.add(matrix[i][j][6]);
 							totalFailingCasesList.add(fcMatrix[i][j][6]);
 						}
 
 
 						if (matrix[i][j][7] >= pSuspThreshold){
-							totalPredsList.add(varlabels[i]+" > 0 AND "+varlabels[j]+" == 0,");
+							totalPredsList.add(varlabels[i]+" > 0 & "+varlabels[j]+" == 0,");
 							totalSuspList.add(matrix[i][j][7]);
 							totalFailingCasesList.add(fcMatrix[i][j][7]);
 						}
 
 
 						if (matrix[i][j][8] >= pSuspThreshold){
-							totalPredsList.add(varlabels[i]+" > 0 AND "+varlabels[j]+" > 0,");
+							totalPredsList.add(varlabels[i]+" > 0 & "+varlabels[j]+" > 0,");
 							totalSuspList.add(matrix[i][j][8]);
 							totalFailingCasesList.add(fcMatrix[i][j][8]);
 						}
@@ -927,71 +928,71 @@ public class LevelTwoValidityCheck {
 					excludesList = parse(pExcludesStr);	
 					if ((j > i)){
 
-						if (includes(containsList, (varlabels[i]+" < 0 AND "+varlabels[j]+" < 0,")) &&
-								includes(excludesList, (varlabels[i]+" < 0 AND "+varlabels[j]+" < 0,"))==false){
-							totalPredsList.add(varlabels[i]+" < 0 AND "+varlabels[j]+" < 0,");
+						if (includes(containsList, (varlabels[i]+" < 0 & "+varlabels[j]+" < 0,")) &&
+								includes(excludesList, (varlabels[i]+" < 0 & "+varlabels[j]+" < 0,"))==false){
+							totalPredsList.add(varlabels[i]+" < 0 & "+varlabels[j]+" < 0,");
 							totalSuspList.add(matrix[i][j][0]);
 							totalFailingCasesList.add(fcMatrix[i][j][0]);
 						}
 
-						if (includes(containsList, (varlabels[i]+" < 0 AND "+varlabels[j]+" == 0,")) &&
-								includes(excludesList, (varlabels[i]+" < 0 AND "+varlabels[j]+" == 0,"))==false){
-							totalPredsList.add(varlabels[i]+" < 0 AND "+varlabels[j]+" == 0,");
+						if (includes(containsList, (varlabels[i]+" < 0 & "+varlabels[j]+" == 0,")) &&
+								includes(excludesList, (varlabels[i]+" < 0 & "+varlabels[j]+" == 0,"))==false){
+							totalPredsList.add(varlabels[i]+" < 0 & "+varlabels[j]+" == 0,");
 							totalSuspList.add(matrix[i][j][1]);
 							totalFailingCasesList.add(fcMatrix[i][j][1]);
 						}
 
-						if (includes(containsList, (varlabels[i]+" < 0 AND "+varlabels[j]+" > 0,")) &&
-								includes(excludesList, (varlabels[i]+" < 0 AND "+varlabels[j]+" > 0,"))==false){
-							totalPredsList.add(varlabels[i]+" < 0 AND "+varlabels[j]+" > 0,");
+						if (includes(containsList, (varlabels[i]+" < 0 & "+varlabels[j]+" > 0,")) &&
+								includes(excludesList, (varlabels[i]+" < 0 & "+varlabels[j]+" > 0,"))==false){
+							totalPredsList.add(varlabels[i]+" < 0 & "+varlabels[j]+" > 0,");
 							totalSuspList.add(matrix[i][j][2]);
 							totalFailingCasesList.add(fcMatrix[i][j][2]);
 						}
 
 
-						if (includes(containsList, (varlabels[i]+" == 0 AND "+varlabels[j]+" < 0,")) &&
-								includes(excludesList, (varlabels[i]+" == 0 AND "+varlabels[j]+" < 0,"))==false){
-							totalPredsList.add(varlabels[i]+" == 0 AND "+varlabels[j]+" < 0,");
+						if (includes(containsList, (varlabels[i]+" == 0 & "+varlabels[j]+" < 0,")) &&
+								includes(excludesList, (varlabels[i]+" == 0 & "+varlabels[j]+" < 0,"))==false){
+							totalPredsList.add(varlabels[i]+" == 0 & "+varlabels[j]+" < 0,");
 							totalSuspList.add(matrix[i][j][3]);
 							totalFailingCasesList.add(fcMatrix[i][j][3]);
 						}
 
 
-						if (includes(containsList, (varlabels[i]+" == 0 AND "+varlabels[j]+" == 0,")) &&
-								includes(excludesList, (varlabels[i]+" == 0 AND "+varlabels[j]+" == 0,"))==false){
-							totalPredsList.add(varlabels[i]+" == 0 AND "+varlabels[j]+" == 0,");
+						if (includes(containsList, (varlabels[i]+" == 0 & "+varlabels[j]+" == 0,")) &&
+								includes(excludesList, (varlabels[i]+" == 0 & "+varlabels[j]+" == 0,"))==false){
+							totalPredsList.add(varlabels[i]+" == 0 & "+varlabels[j]+" == 0,");
 							totalSuspList.add(matrix[i][j][4]);
 							totalFailingCasesList.add(fcMatrix[i][j][4]);
 						}
 
 
-						if (includes(containsList, (varlabels[i]+" == 0 AND "+varlabels[j]+" > 0,")) &&
-								includes(excludesList, (varlabels[i]+" == 0 AND "+varlabels[j]+" > 0,"))==false){
-							totalPredsList.add(varlabels[i]+" == 0 AND "+varlabels[j]+" > 0,");
+						if (includes(containsList, (varlabels[i]+" == 0 & "+varlabels[j]+" > 0,")) &&
+								includes(excludesList, (varlabels[i]+" == 0 & "+varlabels[j]+" > 0,"))==false){
+							totalPredsList.add(varlabels[i]+" == 0 & "+varlabels[j]+" > 0,");
 							totalSuspList.add(matrix[i][j][5]);
 							totalFailingCasesList.add(fcMatrix[i][j][5]);
 						}
 
 
-						if (includes(containsList, (varlabels[i]+" > 0 AND "+varlabels[j]+" < 0,")) &&
-								includes(excludesList, (varlabels[i]+" > 0 AND "+varlabels[j]+" < 0,"))==false){
-							totalPredsList.add(varlabels[i]+" > 0 AND "+varlabels[j]+" < 0,");
+						if (includes(containsList, (varlabels[i]+" > 0 & "+varlabels[j]+" < 0,")) &&
+								includes(excludesList, (varlabels[i]+" > 0 & "+varlabels[j]+" < 0,"))==false){
+							totalPredsList.add(varlabels[i]+" > 0 & "+varlabels[j]+" < 0,");
 							totalSuspList.add(matrix[i][j][6]);
 							totalFailingCasesList.add(fcMatrix[i][j][6]);
 						}
 
 
-						if (includes(containsList, (varlabels[i]+" > 0 AND "+varlabels[j]+" == 0,")) &&
-								includes(excludesList, (varlabels[i]+" > 0 AND "+varlabels[j]+" == 0,"))==false){
-							totalPredsList.add(varlabels[i]+" > 0 AND "+varlabels[j]+" == 0,");
+						if (includes(containsList, (varlabels[i]+" > 0 & "+varlabels[j]+" == 0,")) &&
+								includes(excludesList, (varlabels[i]+" > 0 & "+varlabels[j]+" == 0,"))==false){
+							totalPredsList.add(varlabels[i]+" > 0 & "+varlabels[j]+" == 0,");
 							totalSuspList.add(matrix[i][j][7]);
 							totalFailingCasesList.add(fcMatrix[i][j][7]);
 						}
 
 
-						if (includes(containsList, (varlabels[i]+" > 0 AND "+varlabels[j]+" > 0,")) &&
-								includes(excludesList, (varlabels[i]+" > 0 AND "+varlabels[j]+" > 0,"))==false){
-							totalPredsList.add(varlabels[i]+" > 0 AND "+varlabels[j]+" > 0,");
+						if (includes(containsList, (varlabels[i]+" > 0 & "+varlabels[j]+" > 0,")) &&
+								includes(excludesList, (varlabels[i]+" > 0 & "+varlabels[j]+" > 0,"))==false){
+							totalPredsList.add(varlabels[i]+" > 0 & "+varlabels[j]+" > 0,");
 							totalSuspList.add(matrix[i][j][8]);
 							totalFailingCasesList.add(fcMatrix[i][j][8]);
 						}
@@ -1014,80 +1015,84 @@ public class LevelTwoValidityCheck {
 						{
 							if ( (j > i) && (l > k))
 							{
-								double ij_big_diff = scalarpair_statsset[i][j][MEAN] + scalarpair_statsset[i][j][STD_DEV];
-								double ij_little_diff = scalarpair_statsset[i][j][MEAN] - scalarpair_statsset[i][j][STD_DEV];
-								double kl_big_diff = scalarpair_statsset[k][l][MEAN] + scalarpair_statsset[k][l][STD_DEV];
-								double kl_little_diff = scalarpair_statsset[k][l][MEAN] - scalarpair_statsset[k][l][STD_DEV];
+								String ij_big_diff = String.format("%.6f",
+										scalarpair_statsset[i][j][MEAN] + scalarpair_statsset[i][j][STD_DEV]);
+								String ij_little_diff =  String.format("%.6f",
+										scalarpair_statsset[i][j][MEAN] - scalarpair_statsset[i][j][STD_DEV]);
+								String kl_big_diff =  String.format("%.6f",
+										scalarpair_statsset[k][l][MEAN] + scalarpair_statsset[k][l][STD_DEV]);
+								String kl_little_diff =  String.format("%.6f",
+										scalarpair_statsset[k][l][MEAN] - scalarpair_statsset[k][l][STD_DEV]);
 								
 								if( (matrix[i][j][k][l][0]) >= pSuspThreshold)
 								{
 									// 
-									totalPredsList.add(varlabels[i]+" - "+varlabels[j]+ "< " + ij_little_diff +
-											" AND "+varlabels[k] +" - "+varlabels[l]+" < "+ kl_little_diff+", ");
+									totalPredsList.add(varlabels[i]+" - "+varlabels[j]+ " < " + ij_little_diff +
+											" & "+varlabels[k] +" - "+varlabels[l]+" < "+ kl_little_diff+", ");
 									totalSuspList.add(matrix[i][j][k][l][0]);
 									totalFailingCasesList.add(fcMatrix[i][j][k][l][0]);	
 								}
 
 								if(matrix[i][j][k][l][1] >= pSuspThreshold)
 								{
-									totalPredsList.add(varlabels[i]+" - "+varlabels[j]+ "< " + ij_little_diff + 
-											kl_big_diff+">"+varlabels[k]+" - "+varlabels[l]+" > "+kl_little_diff +", ");
+									totalPredsList.add(varlabels[i]+" - "+varlabels[j]+ " < " + ij_little_diff + 
+											" & "+kl_big_diff+" > "+varlabels[k]+" - "+varlabels[l]+" > "+kl_little_diff +", ");
 									totalSuspList.add(matrix[i][j][k][l][1]);
 									totalFailingCasesList.add(fcMatrix[i][j][k][l][1]);
 								}
 
 								if(matrix[i][j][k][l][2] >= pSuspThreshold)
 								{
-									totalPredsList.add(varlabels[i]+" - "+varlabels[j]+ "< " + ij_little_diff +
-											" AND "+varlabels[k]+" - "+varlabels[l]+"> "+kl_little_diff+", ");
+									totalPredsList.add(varlabels[i]+" - "+varlabels[j]+ " < " + ij_little_diff +
+											" & "+varlabels[k]+" - "+varlabels[l]+" > "+kl_little_diff+", ");
 									totalSuspList.add(matrix[i][j][k][l][2]);
 									totalFailingCasesList.add(fcMatrix[i][j][k][l][2]);
 								}
 
 								if(matrix[i][j][k][l][3] >= pSuspThreshold)
 								{
-									totalPredsList.add(ij_big_diff+">"+varlabels[i]+" - "+varlabels[j]+" > "+ij_little_diff +
-											" AND "+varlabels[k] +" - "+varlabels[l]+" < "+ kl_little_diff+", ");
+									totalPredsList.add(ij_big_diff+" > "+varlabels[i]+" - "+varlabels[j]+" > "+ij_little_diff +
+											" & "+varlabels[k] +" - "+varlabels[l]+" < "+ kl_little_diff+", ");
 									totalSuspList.add(matrix[i][j][k][l][3]);
 									totalFailingCasesList.add(fcMatrix[i][j][k][l][3]);
 								}
 
 								if(matrix[i][j][k][l][4] >= pSuspThreshold)
 								{
-									totalPredsList.add(ij_big_diff+">"+varlabels[i]+" - "+varlabels[j]+" > "+ij_little_diff +
-											kl_big_diff+">"+varlabels[k]+" - "+varlabels[l]+" > "+kl_little_diff +", ");
+									totalPredsList.add(ij_big_diff+" > "+varlabels[i]+" - "+varlabels[j]+" > "+ij_little_diff +
+											" & "+kl_big_diff+" > "+varlabels[k]+" - "+varlabels[l]+" > "+kl_little_diff +", ");
 									totalSuspList.add(matrix[i][j][k][l][4]);
 									totalFailingCasesList.add(fcMatrix[i][j][k][l][4]);	
 								}
 
 								if(matrix[i][j][k][l][5] >= pSuspThreshold)
 								{
-									totalPredsList.add(ij_big_diff+">"+varlabels[i]+" - "+varlabels[j]+" > "+ij_little_diff +
-											" AND "+varlabels[k]+" - "+varlabels[l]+"> "+kl_little_diff+", ");
+									totalPredsList.add(ij_big_diff+" > "+varlabels[i]+" - "+varlabels[j]+" > "+ij_little_diff +
+											" & "+varlabels[k]+" - "+varlabels[l]+" > "+kl_little_diff+", ");
 									totalSuspList.add(matrix[i][j][k][l][5]);
 									totalFailingCasesList.add(fcMatrix[i][j][k][l][5]);
 								}
 
 								if(matrix[i][j][k][l][6] >= pSuspThreshold)
 								{
-									totalPredsList.add(varlabels[i]+" - "+varlabels[j]+ "> " + ij_big_diff + 
-											" AND "+varlabels[k] +" - "+varlabels[l]+" < "+ kl_little_diff+", ");
+									totalPredsList.add(varlabels[i]+" - "+varlabels[j]+ " > " + ij_big_diff + 
+											" & "+varlabels[k] +" - "+varlabels[l]+" < "+ kl_little_diff+", ");
 									totalSuspList.add(matrix[i][j][k][l][6]);
 									totalFailingCasesList.add(fcMatrix[i][j][k][l][6]);
 								}
 
 								if(matrix[i][j][k][l][7] >= pSuspThreshold)
 								{
-									totalPredsList.add(varlabels[i]+" - "+varlabels[j]+ "> " + ij_big_diff + 
-											kl_big_diff+">"+varlabels[k]+" - "+varlabels[l]+" > "+kl_little_diff +", ");
+									totalPredsList.add(varlabels[i]+" - "+varlabels[j]+ " > " + ij_big_diff + 
+											" & "+kl_big_diff+" > "+varlabels[k]+" - "+varlabels[l]+" > "+kl_little_diff +", ");
 									totalSuspList.add(matrix[i][j][k][l][7]);
 									totalFailingCasesList.add(fcMatrix[i][j][k][l][7]);
 								}
 
 								if(matrix[i][j][k][l][8] >= pSuspThreshold)
 								{
-									totalPredsList.add(varlabels[i]+" - "+varlabels[j]+ "> " + ij_big_diff + 
-											" AND "+varlabels[k]+" - "+varlabels[l]+"> "+kl_little_diff+", ");
+									totalPredsList.add(varlabels[i]+" - "+varlabels[j]+ " > " + ij_big_diff + 
+											" & "+varlabels[k]+" - "+varlabels[l]+" > "+kl_little_diff+", ");
 									totalSuspList.add(matrix[i][j][k][l][8]);
 									totalFailingCasesList.add(fcMatrix[i][j][k][l][8]);
 								}
@@ -1109,48 +1114,48 @@ public class LevelTwoValidityCheck {
 						if (pContains == true && pExcludes == false && (j > i) && (l > k))
 						{
 							containsList = parse(pContainsStr);	
-							if (includes(containsList, (varlabels[i]+" < "+varlabels[j]+ " AND "+varlabels[k] +" < "+varlabels[l]+", "))){
-								totalPredsList.add(varlabels[i]+" < "+varlabels[j]+ " AND "+varlabels[k] +" < "+varlabels[l]+", ");
+							if (includes(containsList, (varlabels[i]+" < "+varlabels[j]+ " & "+varlabels[k] +" < "+varlabels[l]+", "))){
+								totalPredsList.add(varlabels[i]+" < "+varlabels[j]+ " & "+varlabels[k] +" < "+varlabels[l]+", ");
 								totalSuspList.add(matrix[i][j][k][l][0]);
 								totalFailingCasesList.add(fcMatrix[i][j][k][l][0]);
 							}
-							if (includes(containsList, (varlabels[i]+" < "+varlabels[j]+ " AND "+varlabels[k] +" == "+varlabels[l]+", "))){
-								totalPredsList.add(varlabels[i]+" < "+varlabels[j]+ " AND "+varlabels[k] +" == "+varlabels[l]+", ");
+							if (includes(containsList, (varlabels[i]+" < "+varlabels[j]+ " & "+varlabels[k] +" == "+varlabels[l]+", "))){
+								totalPredsList.add(varlabels[i]+" < "+varlabels[j]+ " & "+varlabels[k] +" == "+varlabels[l]+", ");
 								totalSuspList.add(matrix[i][j][k][l][1]);
 								totalFailingCasesList.add(fcMatrix[i][j][k][l][1]);
 							}
-							if (includes(containsList, (varlabels[i]+" < "+varlabels[j]+ " AND "+varlabels[k] +" > "+varlabels[l]+", "))){
-								totalPredsList.add(varlabels[i]+" < "+varlabels[j]+ " AND "+varlabels[k] +" > "+varlabels[l]+", ");
+							if (includes(containsList, (varlabels[i]+" < "+varlabels[j]+ " & "+varlabels[k] +" > "+varlabels[l]+", "))){
+								totalPredsList.add(varlabels[i]+" < "+varlabels[j]+ " & "+varlabels[k] +" > "+varlabels[l]+", ");
 								totalSuspList.add(matrix[i][j][k][l][2]);
 								totalFailingCasesList.add(fcMatrix[i][j][k][l][2]);
 							}
-							if (includes(containsList, (varlabels[i]+" == "+varlabels[j]+ " AND "+varlabels[k] +" < "+varlabels[l]+", "))){
-								totalPredsList.add(varlabels[i]+" == "+varlabels[j]+ " AND "+varlabels[k] +" < "+varlabels[l]+", ");
+							if (includes(containsList, (varlabels[i]+" == "+varlabels[j]+ " & "+varlabels[k] +" < "+varlabels[l]+", "))){
+								totalPredsList.add(varlabels[i]+" == "+varlabels[j]+ " & "+varlabels[k] +" < "+varlabels[l]+", ");
 								totalSuspList.add(matrix[i][j][k][l][3]);
 								totalFailingCasesList.add(fcMatrix[i][j][k][l][3]);
 							}
-							if (includes(containsList, (varlabels[i]+" == "+varlabels[j]+ " AND "+varlabels[k] +" == "+varlabels[l]+", "))){
-								totalPredsList.add(varlabels[i]+" == "+varlabels[j]+ " AND "+varlabels[k] +" == "+varlabels[l]+", ");
+							if (includes(containsList, (varlabels[i]+" == "+varlabels[j]+ " & "+varlabels[k] +" == "+varlabels[l]+", "))){
+								totalPredsList.add(varlabels[i]+" == "+varlabels[j]+ " & "+varlabels[k] +" == "+varlabels[l]+", ");
 								totalSuspList.add(matrix[i][j][k][l][4]);
 								totalFailingCasesList.add(fcMatrix[i][j][k][l][4]);
 							}
-							if (includes(containsList, (varlabels[i]+" == "+varlabels[j]+ " AND "+varlabels[k] +" > "+varlabels[l]+", "))){
-								totalPredsList.add(varlabels[i]+" == "+varlabels[j]+ " AND "+varlabels[k] +" > "+varlabels[l]+", ");
+							if (includes(containsList, (varlabels[i]+" == "+varlabels[j]+ " & "+varlabels[k] +" > "+varlabels[l]+", "))){
+								totalPredsList.add(varlabels[i]+" == "+varlabels[j]+ " & "+varlabels[k] +" > "+varlabels[l]+", ");
 								totalSuspList.add(matrix[i][j][k][l][5]);
 								totalFailingCasesList.add(fcMatrix[i][j][k][l][5]);
 							}
-							if (includes(containsList, (varlabels[i]+" > "+varlabels[j]+ " AND "+varlabels[k] +" < "+varlabels[l]+", "))){
-								totalPredsList.add(varlabels[i]+" > "+varlabels[j]+ " AND "+varlabels[k] +" < "+varlabels[l]+", ");
+							if (includes(containsList, (varlabels[i]+" > "+varlabels[j]+ " & "+varlabels[k] +" < "+varlabels[l]+", "))){
+								totalPredsList.add(varlabels[i]+" > "+varlabels[j]+ " & "+varlabels[k] +" < "+varlabels[l]+", ");
 								totalSuspList.add(matrix[i][j][k][l][6]);
 								totalFailingCasesList.add(fcMatrix[i][j][k][l][6]);					   	
 							}
-							if (includes(containsList, (varlabels[i]+" > "+varlabels[j]+ " AND "+varlabels[k] +" == "+varlabels[l]+", "))){
-								totalPredsList.add(varlabels[i]+" > "+varlabels[j]+ " AND "+varlabels[k] +" == "+varlabels[l]+", ");
+							if (includes(containsList, (varlabels[i]+" > "+varlabels[j]+ " & "+varlabels[k] +" == "+varlabels[l]+", "))){
+								totalPredsList.add(varlabels[i]+" > "+varlabels[j]+ " & "+varlabels[k] +" == "+varlabels[l]+", ");
 								totalSuspList.add(matrix[i][j][k][l][7]);
 								totalFailingCasesList.add(fcMatrix[i][j][k][l][7]);
 							}
-							if (includes(containsList, (varlabels[i]+" > "+varlabels[j]+ " AND "+varlabels[k] +" > "+varlabels[l]+", "))){
-								totalPredsList.add(varlabels[i]+" > "+varlabels[j]+ " AND "+varlabels[k] +" > "+varlabels[l]+", ");
+							if (includes(containsList, (varlabels[i]+" > "+varlabels[j]+ " & "+varlabels[k] +" > "+varlabels[l]+", "))){
+								totalPredsList.add(varlabels[i]+" > "+varlabels[j]+ " & "+varlabels[k] +" > "+varlabels[l]+", ");
 								totalSuspList.add(matrix[i][j][k][l][8]);
 								totalFailingCasesList.add(fcMatrix[i][j][k][l][8]);
 							}
@@ -1163,74 +1168,74 @@ public class LevelTwoValidityCheck {
 							excludesList = parse(pExcludesStr);	
 							if ( (j > i) && (l > k))
 							{
-								if(includes(containsList, (varlabels[i]+" < "+varlabels[j]+ " AND "+varlabels[k] +" < "+varlabels[l]+", ")) &&
-										includes(excludesList, (varlabels[i]+" < "+varlabels[j]+ " AND "+varlabels[k] +" < "+varlabels[l]+", ")) == false)
+								if(includes(containsList, (varlabels[i]+" < "+varlabels[j]+ " & "+varlabels[k] +" < "+varlabels[l]+", ")) &&
+										includes(excludesList, (varlabels[i]+" < "+varlabels[j]+ " & "+varlabels[k] +" < "+varlabels[l]+", ")) == false)
 								{
-									totalPredsList.add(varlabels[i]+" < "+varlabels[j]+ " AND "+varlabels[k] +" < "+varlabels[l]+", ");
+									totalPredsList.add(varlabels[i]+" < "+varlabels[j]+ " & "+varlabels[k] +" < "+varlabels[l]+", ");
 									totalSuspList.add(matrix[i][j][k][l][0]);
 									totalFailingCasesList.add(fcMatrix[i][j][k][l][0]);	
 								}
 
-								if(includes(containsList, (varlabels[i]+" < "+varlabels[j]+ " AND "+varlabels[k] +" == "+varlabels[l]+", ")) &&
-										includes(excludesList, (varlabels[i]+" < "+varlabels[j]+ " AND "+varlabels[k] +" == "+varlabels[l]+", ")) == false)
+								if(includes(containsList, (varlabels[i]+" < "+varlabels[j]+ " & "+varlabels[k] +" == "+varlabels[l]+", ")) &&
+										includes(excludesList, (varlabels[i]+" < "+varlabels[j]+ " & "+varlabels[k] +" == "+varlabels[l]+", ")) == false)
 								{
-									totalPredsList.add(varlabels[i]+" < "+varlabels[j]+ " AND "+varlabels[k] +" == "+varlabels[l]+", ");
+									totalPredsList.add(varlabels[i]+" < "+varlabels[j]+ " & "+varlabels[k] +" == "+varlabels[l]+", ");
 									totalSuspList.add(matrix[i][j][k][l][1]);
 									totalFailingCasesList.add(fcMatrix[i][j][k][l][1]);
 								}
 
-								if(includes(containsList, (varlabels[i]+" < "+varlabels[j]+ " AND "+varlabels[k] +" > "+varlabels[l]+", ")) &&
-										includes(excludesList, (varlabels[i]+" < "+varlabels[j]+ " AND "+varlabels[k] +" > "+varlabels[l]+", ")) == false)
+								if(includes(containsList, (varlabels[i]+" < "+varlabels[j]+ " & "+varlabels[k] +" > "+varlabels[l]+", ")) &&
+										includes(excludesList, (varlabels[i]+" < "+varlabels[j]+ " & "+varlabels[k] +" > "+varlabels[l]+", ")) == false)
 								{
-									totalPredsList.add(varlabels[i]+" < "+varlabels[j]+ " AND "+varlabels[k] +" > "+varlabels[l]+", ");
+									totalPredsList.add(varlabels[i]+" < "+varlabels[j]+ " & "+varlabels[k] +" > "+varlabels[l]+", ");
 									totalSuspList.add(matrix[i][j][k][l][2]);
 									totalFailingCasesList.add(fcMatrix[i][j][k][l][2]);
 								}
 
-								if(includes(containsList, (varlabels[i]+" == "+varlabels[j]+ " AND "+varlabels[k] +" < "+varlabels[l]+", ")) &&
-										includes(excludesList, (varlabels[i]+" == "+varlabels[j]+ " AND "+varlabels[k] +" < "+varlabels[l]+", ")) == false)
+								if(includes(containsList, (varlabels[i]+" == "+varlabels[j]+ " & "+varlabels[k] +" < "+varlabels[l]+", ")) &&
+										includes(excludesList, (varlabels[i]+" == "+varlabels[j]+ " & "+varlabels[k] +" < "+varlabels[l]+", ")) == false)
 								{
-									totalPredsList.add(varlabels[i]+" == "+varlabels[j]+ " AND "+varlabels[k] +" < "+varlabels[l]+", ");
+									totalPredsList.add(varlabels[i]+" == "+varlabels[j]+ " & "+varlabels[k] +" < "+varlabels[l]+", ");
 									totalSuspList.add(matrix[i][j][k][l][3]);
 									totalFailingCasesList.add(fcMatrix[i][j][k][l][3]);
 								}
 
-								if(includes(containsList, (varlabels[i]+" == "+varlabels[j]+ " AND "+varlabels[k] +" == "+varlabels[l]+", ")) &&
-										includes(excludesList, (varlabels[i]+" == "+varlabels[j]+ " AND "+varlabels[k] +" == "+varlabels[l]+", ")) == false)
+								if(includes(containsList, (varlabels[i]+" == "+varlabels[j]+ " & "+varlabels[k] +" == "+varlabels[l]+", ")) &&
+										includes(excludesList, (varlabels[i]+" == "+varlabels[j]+ " & "+varlabels[k] +" == "+varlabels[l]+", ")) == false)
 								{
-									totalPredsList.add(varlabels[i]+" == "+varlabels[j]+ " AND "+varlabels[k] +" == "+varlabels[l]+", ");
+									totalPredsList.add(varlabels[i]+" == "+varlabels[j]+ " & "+varlabels[k] +" == "+varlabels[l]+", ");
 									totalSuspList.add(matrix[i][j][k][l][4]);
 									totalFailingCasesList.add(fcMatrix[i][j][k][l][4]);	
 								}
 
-								if(includes(containsList, (varlabels[i]+" == "+varlabels[j]+ " AND "+varlabels[k] +" > "+varlabels[l]+", ")) &&
-										includes(excludesList, (varlabels[i]+" == "+varlabels[j]+ " AND "+varlabels[k] +" > "+varlabels[l]+", ")) == false)
+								if(includes(containsList, (varlabels[i]+" == "+varlabels[j]+ " & "+varlabels[k] +" > "+varlabels[l]+", ")) &&
+										includes(excludesList, (varlabels[i]+" == "+varlabels[j]+ " & "+varlabels[k] +" > "+varlabels[l]+", ")) == false)
 								{
-									totalPredsList.add(varlabels[i]+" == "+varlabels[j]+ " AND "+varlabels[k] +" > "+varlabels[l]+", ");
+									totalPredsList.add(varlabels[i]+" == "+varlabels[j]+ " & "+varlabels[k] +" > "+varlabels[l]+", ");
 									totalSuspList.add(matrix[i][j][k][l][5]);
 									totalFailingCasesList.add(fcMatrix[i][j][k][l][5]);
 								}
 
-								if(includes(containsList, (varlabels[i]+" > "+varlabels[j]+ " AND "+varlabels[k] +" < "+varlabels[l]+", ")) &&
-										includes(excludesList, (varlabels[i]+" > "+varlabels[j]+ " AND "+varlabels[k] +" < "+varlabels[l]+", ")) == false)
+								if(includes(containsList, (varlabels[i]+" > "+varlabels[j]+ " & "+varlabels[k] +" < "+varlabels[l]+", ")) &&
+										includes(excludesList, (varlabels[i]+" > "+varlabels[j]+ " & "+varlabels[k] +" < "+varlabels[l]+", ")) == false)
 								{
-									totalPredsList.add(varlabels[i]+" > "+varlabels[j]+ " AND "+varlabels[k] +" < "+varlabels[l]+", ");
+									totalPredsList.add(varlabels[i]+" > "+varlabels[j]+ " & "+varlabels[k] +" < "+varlabels[l]+", ");
 									totalSuspList.add(matrix[i][j][k][l][6]);
 									totalFailingCasesList.add(fcMatrix[i][j][k][l][6]);
 								}
 
-								if(includes(containsList, (varlabels[i]+" > "+varlabels[j]+ " AND "+varlabels[k] +" == "+varlabels[l]+", ")) &&
-										includes(excludesList, (varlabels[i]+" > "+varlabels[j]+ " AND "+varlabels[k] +" == "+varlabels[l]+", ")) == false)
+								if(includes(containsList, (varlabels[i]+" > "+varlabels[j]+ " & "+varlabels[k] +" == "+varlabels[l]+", ")) &&
+										includes(excludesList, (varlabels[i]+" > "+varlabels[j]+ " & "+varlabels[k] +" == "+varlabels[l]+", ")) == false)
 								{
-									totalPredsList.add(varlabels[i]+" > "+varlabels[j]+ " AND "+varlabels[k] +" == "+varlabels[l]+", ");
+									totalPredsList.add(varlabels[i]+" > "+varlabels[j]+ " & "+varlabels[k] +" == "+varlabels[l]+", ");
 									totalSuspList.add(matrix[i][j][k][l][7]);
 									totalFailingCasesList.add(fcMatrix[i][j][k][l][7]);
 								}
 
-								if(includes(containsList, (varlabels[i]+" > "+varlabels[j]+ " AND "+varlabels[k] +" > "+varlabels[l]+", ")) &&
-										includes(excludesList, (varlabels[i]+" > "+varlabels[j]+ " AND "+varlabels[k] +" > "+varlabels[l]+", ")) == false)
+								if(includes(containsList, (varlabels[i]+" > "+varlabels[j]+ " & "+varlabels[k] +" > "+varlabels[l]+", ")) &&
+										includes(excludesList, (varlabels[i]+" > "+varlabels[j]+ " & "+varlabels[k] +" > "+varlabels[l]+", ")) == false)
 								{
-									totalPredsList.add(varlabels[i]+" > "+varlabels[j]+ " AND "+varlabels[k] +" > "+varlabels[l]+", ");
+									totalPredsList.add(varlabels[i]+" > "+varlabels[j]+ " & "+varlabels[k] +" > "+varlabels[l]+", ");
 									totalSuspList.add(matrix[i][j][k][l][8]);
 									totalFailingCasesList.add(fcMatrix[i][j][k][l][8]);
 								}
@@ -1239,48 +1244,48 @@ public class LevelTwoValidityCheck {
 						if (pExcludes == true && pContains == false && (j > i) && (l > k))
 						{
 							excludesList = parse(pExcludesStr);	
-							if (includes(excludesList, (varlabels[i]+" < "+varlabels[j]+ " AND "+varlabels[k] +" < "+varlabels[l]+", ")) == false){
-								totalPredsList.add(varlabels[i]+" < "+varlabels[j]+ " AND "+varlabels[k] +" < "+varlabels[l]+", ");
+							if (includes(excludesList, (varlabels[i]+" < "+varlabels[j]+ " & "+varlabels[k] +" < "+varlabels[l]+", ")) == false){
+								totalPredsList.add(varlabels[i]+" < "+varlabels[j]+ " & "+varlabels[k] +" < "+varlabels[l]+", ");
 								totalSuspList.add(matrix[i][j][k][l][0]);
 								totalFailingCasesList.add(fcMatrix[i][j][k][l][0]);
 							}
-							if (includes(excludesList, (varlabels[i]+" < "+varlabels[j]+ " AND "+varlabels[k] +" == "+varlabels[l]+", ")) == false){
-								totalPredsList.add(varlabels[i]+" < "+varlabels[j]+ " AND "+varlabels[k] +" == "+varlabels[l]+", ");
+							if (includes(excludesList, (varlabels[i]+" < "+varlabels[j]+ " & "+varlabels[k] +" == "+varlabels[l]+", ")) == false){
+								totalPredsList.add(varlabels[i]+" < "+varlabels[j]+ " & "+varlabels[k] +" == "+varlabels[l]+", ");
 								totalSuspList.add(matrix[i][j][k][l][1]);
 								totalFailingCasesList.add(fcMatrix[i][j][k][l][1]);
 							}
-							if (includes(excludesList, (varlabels[i]+" < "+varlabels[j]+ " AND "+varlabels[k] +" > "+varlabels[l]+", ")) == false){
-								totalPredsList.add(varlabels[i]+" < "+varlabels[j]+ " AND "+varlabels[k] +" > "+varlabels[l]+", ");
+							if (includes(excludesList, (varlabels[i]+" < "+varlabels[j]+ " & "+varlabels[k] +" > "+varlabels[l]+", ")) == false){
+								totalPredsList.add(varlabels[i]+" < "+varlabels[j]+ " & "+varlabels[k] +" > "+varlabels[l]+", ");
 								totalSuspList.add(matrix[i][j][k][l][2]);
 								totalFailingCasesList.add(fcMatrix[i][j][k][l][2]);
 							}
-							if (includes(excludesList, (varlabels[i]+" == "+varlabels[j]+ " AND "+varlabels[k] +" < "+varlabels[l]+", ")) == false){
-								totalPredsList.add(varlabels[i]+" == "+varlabels[j]+ " AND "+varlabels[k] +" < "+varlabels[l]+", ");
+							if (includes(excludesList, (varlabels[i]+" == "+varlabels[j]+ " & "+varlabels[k] +" < "+varlabels[l]+", ")) == false){
+								totalPredsList.add(varlabels[i]+" == "+varlabels[j]+ " & "+varlabels[k] +" < "+varlabels[l]+", ");
 								totalSuspList.add(matrix[i][j][k][l][3]);
 								totalFailingCasesList.add(fcMatrix[i][j][k][l][3]);
 							}
-							if (includes(excludesList, (varlabels[i]+" == "+varlabels[j]+ " AND "+varlabels[k] +" == "+varlabels[l]+", ")) == false){
-								totalPredsList.add(varlabels[i]+" == "+varlabels[j]+ " AND "+varlabels[k] +" == "+varlabels[l]+", ");
+							if (includes(excludesList, (varlabels[i]+" == "+varlabels[j]+ " & "+varlabels[k] +" == "+varlabels[l]+", ")) == false){
+								totalPredsList.add(varlabels[i]+" == "+varlabels[j]+ " & "+varlabels[k] +" == "+varlabels[l]+", ");
 								totalSuspList.add(matrix[i][j][k][l][4]);
 								totalFailingCasesList.add(fcMatrix[i][j][k][l][4]);
 							}
-							if (includes(excludesList, (varlabels[i]+" == "+varlabels[j]+ " AND "+varlabels[k] +" > "+varlabels[l]+", ")) == false){
-								totalPredsList.add(varlabels[i]+" == "+varlabels[j]+ " AND "+varlabels[k] +" > "+varlabels[l]+", ");
+							if (includes(excludesList, (varlabels[i]+" == "+varlabels[j]+ " & "+varlabels[k] +" > "+varlabels[l]+", ")) == false){
+								totalPredsList.add(varlabels[i]+" == "+varlabels[j]+ " & "+varlabels[k] +" > "+varlabels[l]+", ");
 								totalSuspList.add(matrix[i][j][k][l][5]);
 								totalFailingCasesList.add(fcMatrix[i][j][k][l][5]);
 							}
-							if (includes(excludesList, (varlabels[i]+" > "+varlabels[j]+ " AND "+varlabels[k] +" < "+varlabels[l]+", ")) == false){
-								totalPredsList.add(varlabels[i]+" > "+varlabels[j]+ " AND "+varlabels[k] +" < "+varlabels[l]+", ");
+							if (includes(excludesList, (varlabels[i]+" > "+varlabels[j]+ " & "+varlabels[k] +" < "+varlabels[l]+", ")) == false){
+								totalPredsList.add(varlabels[i]+" > "+varlabels[j]+ " & "+varlabels[k] +" < "+varlabels[l]+", ");
 								totalSuspList.add(matrix[i][j][k][l][6]);
 								totalFailingCasesList.add(fcMatrix[i][j][k][l][6]);					   	
 							}
-							if (includes(excludesList, (varlabels[i]+" > "+varlabels[j]+ " AND "+varlabels[k] +" == "+varlabels[l]+", ")) == false){
-								totalPredsList.add(varlabels[i]+" > "+varlabels[j]+ " AND "+varlabels[k] +" == "+varlabels[l]+", ");
+							if (includes(excludesList, (varlabels[i]+" > "+varlabels[j]+ " & "+varlabels[k] +" == "+varlabels[l]+", ")) == false){
+								totalPredsList.add(varlabels[i]+" > "+varlabels[j]+ " & "+varlabels[k] +" == "+varlabels[l]+", ");
 								totalSuspList.add(matrix[i][j][k][l][7]);
 								totalFailingCasesList.add(fcMatrix[i][j][k][l][7]);
 							}
-							if (includes(excludesList, (varlabels[i]+" > "+varlabels[j]+ " AND "+varlabels[k] +" > "+varlabels[l]+", ")) == false){
-								totalPredsList.add(varlabels[i]+" > "+varlabels[j]+ " AND "+varlabels[k] +" > "+varlabels[l]+", ");
+							if (includes(excludesList, (varlabels[i]+" > "+varlabels[j]+ " & "+varlabels[k] +" > "+varlabels[l]+", ")) == false){
+								totalPredsList.add(varlabels[i]+" > "+varlabels[j]+ " & "+varlabels[k] +" > "+varlabels[l]+", ");
 								totalSuspList.add(matrix[i][j][k][l][8]);
 								totalFailingCasesList.add(fcMatrix[i][j][k][l][8]);
 							}
@@ -1292,63 +1297,63 @@ public class LevelTwoValidityCheck {
 							{
 								if( (matrix[i][j][k][l][0]) >= pSuspThreshold)
 								{
-									totalPredsList.add(varlabels[i]+" < "+varlabels[j]+ " AND "+varlabels[k] +" < "+varlabels[l]+", ");
+									totalPredsList.add(varlabels[i]+" < "+varlabels[j]+ " & "+varlabels[k] +" < "+varlabels[l]+", ");
 									totalSuspList.add(matrix[i][j][k][l][0]);
 									totalFailingCasesList.add(fcMatrix[i][j][k][l][0]);	
 								}
 
 								if(matrix[i][j][k][l][1] >= pSuspThreshold)
 								{
-									totalPredsList.add(varlabels[i]+" < "+varlabels[j]+ " AND "+varlabels[k] +" == "+varlabels[l]+", ");
+									totalPredsList.add(varlabels[i]+" < "+varlabels[j]+ " & "+varlabels[k] +" == "+varlabels[l]+", ");
 									totalSuspList.add(matrix[i][j][k][l][1]);
 									totalFailingCasesList.add(fcMatrix[i][j][k][l][1]);
 								}
 
 								if(matrix[i][j][k][l][2] >= pSuspThreshold)
 								{
-									totalPredsList.add(varlabels[i]+" < "+varlabels[j]+ " AND "+varlabels[k] +" > "+varlabels[l]+", ");
+									totalPredsList.add(varlabels[i]+" < "+varlabels[j]+ " & "+varlabels[k] +" > "+varlabels[l]+", ");
 									totalSuspList.add(matrix[i][j][k][l][2]);
 									totalFailingCasesList.add(fcMatrix[i][j][k][l][2]);
 								}
 
 								if(matrix[i][j][k][l][3] >= pSuspThreshold)
 								{
-									totalPredsList.add(varlabels[i]+" == "+varlabels[j]+ " AND "+varlabels[k] +" < "+varlabels[l]+", ");
+									totalPredsList.add(varlabels[i]+" == "+varlabels[j]+ " & "+varlabels[k] +" < "+varlabels[l]+", ");
 									totalSuspList.add(matrix[i][j][k][l][3]);
 									totalFailingCasesList.add(fcMatrix[i][j][k][l][3]);
 								}
 
 								if(matrix[i][j][k][l][4] >= pSuspThreshold)
 								{
-									totalPredsList.add(varlabels[i]+" == "+varlabels[j]+ " AND "+varlabels[k] +" == "+varlabels[l]+", ");
+									totalPredsList.add(varlabels[i]+" == "+varlabels[j]+ " & "+varlabels[k] +" == "+varlabels[l]+", ");
 									totalSuspList.add(matrix[i][j][k][l][4]);
 									totalFailingCasesList.add(fcMatrix[i][j][k][l][4]);	
 								}
 
 								if(matrix[i][j][k][l][5] >= pSuspThreshold)
 								{
-									totalPredsList.add(varlabels[i]+" == "+varlabels[j]+ " AND "+varlabels[k] +" > "+varlabels[l]+", ");
+									totalPredsList.add(varlabels[i]+" == "+varlabels[j]+ " & "+varlabels[k] +" > "+varlabels[l]+", ");
 									totalSuspList.add(matrix[i][j][k][l][5]);
 									totalFailingCasesList.add(fcMatrix[i][j][k][l][5]);
 								}
 
 								if(matrix[i][j][k][l][6] >= pSuspThreshold)
 								{
-									totalPredsList.add(varlabels[i]+" > "+varlabels[j]+ " AND "+varlabels[k] +" < "+varlabels[l]+", ");
+									totalPredsList.add(varlabels[i]+" > "+varlabels[j]+ " & "+varlabels[k] +" < "+varlabels[l]+", ");
 									totalSuspList.add(matrix[i][j][k][l][6]);
 									totalFailingCasesList.add(fcMatrix[i][j][k][l][6]);
 								}
 
 								if(matrix[i][j][k][l][7] >= pSuspThreshold)
 								{
-									totalPredsList.add(varlabels[i]+" > "+varlabels[j]+ " AND "+varlabels[k] +" == "+varlabels[l]+", ");
+									totalPredsList.add(varlabels[i]+" > "+varlabels[j]+ " & "+varlabels[k] +" == "+varlabels[l]+", ");
 									totalSuspList.add(matrix[i][j][k][l][7]);
 									totalFailingCasesList.add(fcMatrix[i][j][k][l][7]);
 								}
 
 								if(matrix[i][j][k][l][8] >= pSuspThreshold)
 								{
-									totalPredsList.add(varlabels[i]+" > "+varlabels[j]+ " AND "+varlabels[k] +" > "+varlabels[l]+", ");
+									totalPredsList.add(varlabels[i]+" > "+varlabels[j]+ " & "+varlabels[k] +" > "+varlabels[l]+", ");
 									totalSuspList.add(matrix[i][j][k][l][8]);
 									totalFailingCasesList.add(fcMatrix[i][j][k][l][8]);
 								}
@@ -1368,24 +1373,31 @@ public class LevelTwoValidityCheck {
 				if (pExcludes == false && pContains == false)
 				{
 					if (j > i){
-						double big_diff = scalarpair_statsset[i][j][MEAN] + scalarpair_statsset[i][j][STD_DEV];
-						double small_diff = scalarpair_statsset[i][j][MEAN] - scalarpair_statsset[i][j][STD_DEV];
+						String big_diff = String.format("%.6f",
+								scalarpair_statsset[i][j][MEAN] + scalarpair_statsset[i][j][STD_DEV]);
+						String small_diff = String.format("%.6f", 
+								scalarpair_statsset[i][j][MEAN] - scalarpair_statsset[i][j][STD_DEV]);
 
+						
 						if (matrix[i][j][LARGE] >= pSuspThreshold)
 						{
-							totalPredsList.add(varlabels[i]+" - "+varlabels[j]+"> "+big_diff);
+							totalPredsList.add(varlabels[i]+" - "+varlabels[j]+" > "+big_diff+", ");
 							totalSuspList.add(matrix[i][j][LARGE]);
 							totalFailingCasesList.add(fcMatrix[i][j][LARGE]);
 						}
 						if (matrix[i][j][MED] >= pSuspThreshold)
 						{
-							totalPredsList.add(big_diff+">"+varlabels[i]+" - "+varlabels[j]+" > "+small_diff);
+							totalPredsList.add(big_diff+" > "+(varlabels[i]+" - "+varlabels[j])+" > "+small_diff+", ");
 							totalSuspList.add(matrix[i][j][MED]);
 							totalFailingCasesList.add(fcMatrix[i][j][MED]);
+//							System.out.println((varlabels[i]+" - "+varlabels[j]));
+//							System.out.println(small_diff);
+//							System.out.println(big_diff);
+							
 						}
 						if (matrix[i][j][SMALL] >= pSuspThreshold)
 						{
-							totalPredsList.add(varlabels[i]+" - "+varlabels[j]+"< "+small_diff);
+							totalPredsList.add(varlabels[i]+" - "+varlabels[j]+" < "+small_diff+", ");
 							totalSuspList.add(matrix[i][j][SMALL]);
 							totalFailingCasesList.add(fcMatrix[i][j][SMALL]);
 						}
@@ -2002,7 +2014,7 @@ public class LevelTwoValidityCheck {
 		pass_elastic_scalar_pair_cb_preds = new double [pVariables][pVariables][pVariables][pVariables] [PRED_SIZE*PRED_SIZE];
 		fail_elastic_scalar_pair_cb_preds = new double [pVariables][pVariables][pVariables][pVariables] [PRED_SIZE*PRED_SIZE];
 
-		// need these for jk and lm
+		// need these for jk & lm
 		// == 0.0 --> big_diff < x < little_diff
 		// > 0 ---> x > big_diff 
 		// < 0 ----> x < little_diff
@@ -2255,7 +2267,7 @@ public class LevelTwoValidityCheck {
 		try{
 			Scanner fileScanner = new Scanner(inputFile);
 
-			// grab the headers and copy the variable labels
+			// grab the headers & copy the variable labels
 			String line = fileScanner.nextLine();
 			StringTokenizer tok = new StringTokenizer(line, ",");
 			// eat the first token its the label header
@@ -2264,8 +2276,8 @@ public class LevelTwoValidityCheck {
 				varlabels[i] = tok.nextToken();
 			}
 
-			// grab the remaining rows and copy appropriately
-			// first col is an ID and the last col is an outcome
+			// grab the remaining rows & copy appropriately
+			// first col is an ID & the last col is an outcome
 			// everything else is a data sample for a variable
 
 			for (int i=0; i<dataset.length; i++){
@@ -2301,7 +2313,7 @@ public class LevelTwoValidityCheck {
 	private int computeNumberOfVariables(){
 		// goes through the first line of a csv file
 		// number of vars = # of tokens - 2
-		// -2 b/c there is 1 traceID and 1 Pass/Fail outcome token
+		// -2 b/c there is 1 traceID & 1 Pass/Fail outcome token
 		int varNumber = 0;
 		try{
 			Scanner fileScanner = new Scanner(inputFile);
@@ -2321,8 +2333,8 @@ public class LevelTwoValidityCheck {
 	}
 
 	private int computeNumberOfSamples(){
-		// goes through and counts the number of rows in a csv file
-		// First line is a header and is ignored.
+		// goes through & counts the number of rows in a csv file
+		// First line is a header & is ignored.
 		int lineNumber = 0;
 		try{
 			Scanner fileScanner = new Scanner(inputFile);
@@ -2411,7 +2423,7 @@ public class LevelTwoValidityCheck {
 			ArrayList<String> matrixRows = readIntoArrayList(matrix);
 			// first row is headers lose them
 			matrixRows.remove(0);
-			// go through the matrix file and put *** in each blank space
+			// go through the matrix file & put *** in each blank space
 			for(int i=0; i<matrixRows.size(); i++)
 			{
 				String temp = matrixRows.get(i);
