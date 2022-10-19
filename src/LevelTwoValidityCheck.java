@@ -2153,32 +2153,29 @@ public class LevelTwoValidityCheck {
 
 	private void computeElasticScalarPairStats(int pSamples, int pVariables){
 		scalarpair_statsset = new double [pVariables][pVariables][STATS_COLS];
-		for (int i=0; i<differenceset.length; i++){
-			for (int j=0; j<pVariables; j++){
-				for (int k=0; k<pVariables; k++){
-					scalarpair_statsset[j][k][MEAN] += differenceset[i][j][k];
+		
+		int i_dim = differenceset.length;
+		int j_dim = differenceset[0].length;
+		int k_dim = differenceset[0][0].length;
+		
+		double [][][] sp_differenceset = new double[j_dim][k_dim][i_dim];
+		
+		for (int i=0; i<i_dim; i++){
+			for (int j=0; j<j_dim; j++){
+				for (int k=0; k<k_dim; k++){
+					sp_differenceset[j][k][i] += differenceset[i][j][k];
 				}
 			}
 		}
-
-		for (int j=0; j<pVariables; j++){
-			for (int k=0; k<pVariables; k++){
-				scalarpair_statsset[j][k][MEAN] = scalarpair_statsset[j][k][MEAN]/pVariables;
-			}
-		}
-
-		for (int i=0; i<differenceset.length; i++){	
-			for (int j=0; j<pVariables; j++){
-				for (int k=0; k<pVariables; k++){
-					scalarpair_statsset[j][k][STD_DEV] += ((differenceset[i][j][k] - scalarpair_statsset[j][k][MEAN]) * (differenceset[i][j][k] - scalarpair_statsset[j][k][MEAN]));
+		
+		for (int j=0; j<j_dim; j++){
+			for (int k=0; k<k_dim; k++){
+			    double [] buffer_array = new double[i_dim];
+				for (int i=0; i<i_dim; i++){
+					buffer_array[i] += sp_differenceset[j][k][i];
 				}
-			}
-		}
-
-		for (int j=0; j<pVariables; j++){
-			for (int k=0; k<pVariables; k++){
-				scalarpair_statsset[j][k][STD_DEV] = scalarpair_statsset[j][k][STD_DEV]/pVariables;
-				scalarpair_statsset[j][k][STD_DEV] = Math.sqrt(scalarpair_statsset[j][k][STD_DEV]);
+				scalarpair_statsset[j][k][MEAN] = mean(buffer_array);
+				scalarpair_statsset[j][k][MEAN] = stddev(buffer_array);
 			}
 		}
 	}
