@@ -2175,7 +2175,7 @@ public class LevelTwoValidityCheck {
 					buffer_array[i] += sp_differenceset[j][k][i];
 				}
 				scalarpair_statsset[j][k][MEAN] = mean(buffer_array);
-				scalarpair_statsset[j][k][MEAN] = stddev(buffer_array);
+				scalarpair_statsset[j][k][STD_DEV] = stddev(buffer_array);
 			}
 		}
 	}
